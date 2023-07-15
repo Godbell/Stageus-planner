@@ -1,0 +1,96 @@
+@font-face {
+  font-family: NanumGothic;
+  src: url(../fonts/NanumGothic-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: NanumGothicBold;
+  src: url(../fonts/NanumGothic-Bold.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: NanumGothicExtraBold;
+  src: url(../fonts/NanumGothic-ExtraBold.ttf) format('truetype');
+}
+
+body {
+  display: flex;
+  flex-direction: row;
+}
+
+.logo-area {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(226deg, #1a1d63 0%, #000 100%);
+}
+
+.form-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+  width: 430px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-form > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 11px;
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+form h1 {
+  font-family: NanumGothicExtraBold;
+  font-size: 30px;
+  margin-bottom: 14px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-row-label {
+  font-size: 16px;
+  font-family: NanumGothicBold;
+}
+
+input[type='text'],
+input[type='password'] {
+  border-radius: 4px;
+  border: 1px solid var(--textarea-color);
+  width: 350px;
+  height: 30px;
+  padding-left: 5px;
+  font-size: 16px;
+  font-family: NanumGothic;
+}
+
+input[type='text']:focus,
+input[type='password']:focus {
+  border: 1px solid var(--main-color);
+}
+
+input[type='submit'] {
+  width: 350px;
+  height: 40px;
+  background-color: var(--main-color);
+  border-radius: 4px;
+  font-size: 16px;
+  color: white;
+  font-family: NanumGothicBold;
+}
+
+input[type='submit']:hover {
+  background-color: var(--main-color-focused);
+}
