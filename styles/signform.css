@@ -104,10 +104,12 @@ input[type='submit']:hover {
   .logo-area {
     height: 50px;
     flex: initial;
+    justify-content: flex-start;
   }
 
   .logo-area > img {
     width: 70px;
+    margin-left: 12px;
   }
 
   .form-area {
