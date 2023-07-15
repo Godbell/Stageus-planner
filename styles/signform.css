@@ -51,6 +51,7 @@ body {
 form h1 {
   font-family: NanumGothicExtraBold;
   font-size: 30px;
+  margin: 0;
   margin-bottom: 14px;
 }
 
