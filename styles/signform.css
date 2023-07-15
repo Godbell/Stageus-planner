@@ -94,3 +94,22 @@ input[type='submit'] {
 input[type='submit']:hover {
   background-color: var(--main-color-focused);
 }
+
+@media screen and (max-width: 1024px) {
+  body {
+    flex-direction: column;
+  }
+
+  .logo-area {
+    height: 50px;
+    flex: initial;
+  }
+
+  .logo-area > img {
+    width: 70px;
+  }
+
+  .form-area {
+    flex: 1;
+  }
+}
