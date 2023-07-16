@@ -133,7 +133,6 @@
 
     const validatePhoneNumber = () => {
       removeInputNotice('phone-number');
-      validations.phoneNumberDupChecked = false;
 
       const validationResult = isPhoneNumberValid(
         document.getElementById('phone-number-input').value
@@ -170,7 +169,6 @@
     };
 
     const validateForm = () => {
-      event.preventDefault();
       let result = true;
 
       validateMail();
