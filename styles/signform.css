@@ -34,6 +34,10 @@ body {
   background: linear-gradient(226deg, #1a1d63 0%, #000 100%);
 }
 
+.logo-area img {
+  width: 100%;
+}
+
 .form-area {
   display: flex;
   flex-direction: column;
@@ -177,7 +181,7 @@ input[type='submit']:hover {
     justify-content: flex-start;
   }
 
-  .logo-area > img {
+  .logo-area > a {
     width: 70px;
     margin-left: 12px;
   }
