@@ -15,59 +15,106 @@
     </div>
     <div class="form-area">
       <h1>회원가입</h1>
-      <form class="login-form">
+      <form class="login-form" method="post" onsubmit="return validateForm();">
         <div>
           <div class="form-row">
             <div class="form-row-label-area">
               <span class="form-row-label">메일</span>
-              <span class="form-row-label-notice"></span>
+              <span id="mail-notice" class="form-row-label-notice"></span>
             </div>
             <div class="form-row-input-area">
               <input
+                id="mail-input"
                 type="text"
                 name="mail"
                 placeholder="example@example.com"
+                class="text-input"
+                onchange="validateMail()"
               />
-              <button class="dup-check-button" type="button">중복확인</button>
+              <button
+                class="dup-check-button"
+                type="button"
+                onclick="checkMailDuplication()"
+              >
+                중복확인
+              </button>
             </div>
           </div>
           <div class="form-row">
             <div class="form-row-label-area">
               <span class="form-row-label">이름</span>
-              <span class="form-row-label-notice">
-                유효하지 않은 이름입니다.
-              </span>
+              <span id="name-notice" class="form-row-label-notice"></span>
             </div>
             <div class="form-row-input-area">
-              <input type="text" name="text" placeholder="" />
+              <input
+                id="name-input"
+                class="text-input"
+                type="text"
+                name="name"
+                placeholder=""
+                onchange="validateName()"
+              />
             </div>
           </div>
           <div class="form-row">
             <div class="form-row-label-area">
               <span class="form-row-label">전화번호</span>
-              <span class="form-row-label-notice"></span>
+              <span
+                id="phone-number-notice"
+                class="form-row-label-notice"
+              ></span>
             </div>
             <div class="form-row-input-area">
-              <input type="text" name="text" placeholder="01012341234" />
-              <button class="dup-check-button" type="button">중복확인</button>
+              <input
+                id="phone-number-input"
+                type="text"
+                name="phone-number"
+                class="text-input"
+                placeholder="01012341234"
+                onchange="validatePhoneNumber()"
+              />
+              <button
+                class="dup-check-button"
+                type="button"
+                onclick="checkPhoneNumberDuplication()"
+              >
+                중복확인
+              </button>
             </div>
           </div>
           <div class="form-row">
             <div class="form-row-label-area">
               <span class="form-row-label">비밀번호</span>
-              <span class="form-row-label-notice"></span>
+              <span id="password-notice" class="form-row-label-notice"></span>
             </div>
             <div class="form-row-input-area">
-              <input type="password" name="password" placeholder="********" />
+              <input
+                id="password-input"
+                type="password"
+                name="password"
+                class="text-input"
+                placeholder="********"
+                onchange="validatePassword()"
+              />
             </div>
           </div>
           <div class="form-row">
             <div class="form-row-label-area">
               <span class="form-row-label">비밀번호 확인</span>
-              <span class="form-row-label-notice"></span>
+              <span
+                id="password-confirm-notice"
+                class="form-row-label-notice"
+              ></span>
             </div>
             <div class="form-row-input-area">
-              <input type="password" name="password" placeholder="********" />
+              <input
+                id="password-confirm-input"
+                type="password"
+                name="password"
+                class="text-input"
+                placeholder="********"
+                onchange="validatePasswordConfirm()"
+              />
             </div>
           </div>
         </div>
@@ -75,4 +122,375 @@
       </form>
     </div>
   </body>
+  <script>
+    let validations = {
+      mail: false,
+      mailDupChecked: false,
+      name: false,
+      phoneNumber: false,
+      phoneNumberDupChecked: false,
+      password: false,
+      passwordConfirm: false,
+    };
+
+    const validateMail = () => {
+      removeInputNotice('mail');
+      validations.mailDupChecked = false;
+
+      const validationResult = isMailValid(
+        document.getElementById('mail-input').value
+      );
+      validations.mail = validationResult.isValid;
+      if (validationResult.isValid === false) {
+        showInputWarning('mail', validationResult.message);
+      }
+    };
+
+    const validateName = () => {
+      removeInputNotice('name');
+      const validationResult = isNameValid(
+        document.getElementById('name-input').value
+      );
+      validations.name = validationResult.isValid;
+      if (validationResult.isValid === false) {
+        showInputWarning('name', validationResult.message);
+      }
+    };
+
+    const validatePhoneNumber = () => {
+      removeInputNotice('phone-number');
+      validations.phoneNumberDupChecked = false;
+
+      const validationResult = isPhoneNumberValid(
+        document.getElementById('phone-number-input').value
+      );
+      validations.phoneNumber = validationResult.isValid;
+      if (validationResult.isValid === false) {
+        showInputWarning('phone-number', validationResult.message);
+      }
+    };
+
+    const validatePassword = () => {
+      removeInputNotice('password');
+      validations.passwordConfirm = false;
+
+      const validationResult = isPasswordValid(
+        document.getElementById('password-input').value
+      );
+      validations.password = validationResult.isValid;
+      if (validationResult.isValid === false) {
+        showInputWarning('password', validationResult.message);
+      }
+    };
+
+    const validatePasswordConfirm = () => {
+      removeInputNotice('password-confirm');
+
+      const validationResult = isPasswordConfirmValid(
+        document.getElementById('password-input').value,
+        document.getElementById('password-confirm-input').value
+      );
+      validations.passwordConfirm = validationResult.isValid;
+      if (validationResult.isValid === false) {
+        showInputWarning('password-confirm', validationResult.message);
+      }
+    };
+
+    const showInputWarning = (inputSubject, message) => {
+      const inputElement = document.getElementById(`${inputSubject}-input`);
+      const noticeElement = document.getElementById(`${inputSubject}-notice`);
+
+      inputElement.classList.add('input-warning');
+      noticeElement.classList.add('notice-warning');
+      noticeElement.innerHTML = message;
+    };
+
+    const showInputAllowance = (inputSubject, message) => {
+      const inputElement = document.getElementById(`${inputSubject}-input`);
+      const noticeElement = document.getElementById(`${inputSubject}-notice`);
+
+      inputElement.classList.add('input-accepted');
+      noticeElement.classList.add('notice-accepted');
+      noticeElement.innerHTML = message;
+    };
+
+    const removeInputNotice = (inputSubject) => {
+      const inputElement = document.getElementById(`${inputSubject}-input`);
+      const noticeElement = document.getElementById(`${inputSubject}-notice`);
+
+      inputElement.classList.remove('input-warning');
+      inputElement.classList.remove('input-accepted');
+      noticeElement.classList.remove('notice-warning');
+      noticeElement.classList.remove('notice-accepted');
+      noticeElement.innerHTML = '';
+    };
+
+    const isMailValid = (mail) => {
+      return {
+        isValid: true,
+      };
+    };
+
+    const checkMailDuplication = () => {
+      // check code here
+
+      validateMail();
+      if (validations.mail === true) {
+        validations.mailDupChecked = true;
+        showInputAllowance('mail', '사용할 수 있는 메일 주소입니다.');
+      }
+    };
+
+    const isNameValid = (name) => {
+      return {
+        isValid: true,
+      };
+    };
+
+    const isPhoneNumberValid = (phoneNumber) => {
+      return {
+        isValid: true,
+      };
+    };
+
+    const checkPhoneNumberDuplication = () => {
+      // check code here
+
+      validatePhoneNumber();
+      if (validations.phoneNumber == true) {
+        validations.phoneNumberDupChecked = true;
+        showInputAllowance('phone-number', '사용할 수 있는 전화번호입니다.');
+      }
+    };
+
+    const isPasswordValid = (password) => {
+      return {
+        isValid: true,
+      };
+    };
+
+    const isPasswordConfirmValid = (password, passwordConfirm) => {
+      return {
+        isValid: true,
+      };
+    };
+
+    const validateForm = () => {
+      event.preventDefault();
+      let result = true;
+
+      if (validations.mailDupChecked === false) {
+        showInputWarning('mail', '중복체크를 실행해 주세요.');
+        result = false;
+      }
+      if (validations.phoneNumberDupChecked === false) {
+        showInputWarning('phone-number', '중복체크를 실행해 주세요.');
+        result = false;
+      }
+
+      validateMail();
+      validateName();
+      validatePhoneNumber();
+      validatePassword();
+      validatePasswordConfirm();
+
+      if (
+        Object.values(validations).filter(
+          (validationResult) => validationResult === false
+        ).length > 0
+      ) {
+        result = false;
+      }
+
+      return result;
+    };
+
+    // test
+    const runTest = (inputValues) => {
+      let results = {
+        mail: undefined,
+        name: undefined,
+        phoneNumber: undefined,
+        password: undefined,
+        passwordConfirm: undefined,
+      };
+
+      if (inputValues.mail !== undefined) {
+        results.mail = isMailValid(inputValues.mail).isValid;
+      }
+
+      if (inputValues.name !== undefined) {
+        results.name = isNameValid(inputValues.name).isValid;
+      }
+
+      if (inputValues.phoneNumber !== undefined) {
+        results.phoneNumber = isPhoneNumberValid(
+          inputValues.phoneNumber
+        ).isValid;
+      }
+
+      if (inputValues.password !== undefined) {
+        results.password = isPasswordValid(inputValues.password).isValid;
+      }
+
+      if (inputValues.passwordConfirm !== undefined) {
+        results.passwordConfirm = isPasswordConfirmValid(
+          inputValues.password,
+          inputValues.passwordConfirm
+        ).isValid;
+      }
+
+      return results;
+    };
+
+    const compareResult = (expected, actual) => {
+      let result = 'SUCCEED';
+      for (key of Object.keys(actual)) {
+        if (actual[key] !== expected[key]) {
+          result = 'FAIL';
+          break;
+        }
+      }
+      return result;
+    };
+
+    const runAllTests = () => {
+      // test #1, blank input
+      let inputValues = {
+        mail: '',
+        name: '',
+        phoneNumber: '',
+        password: '',
+        passwordConfirm: '',
+      };
+      let expected = {
+        mail: false,
+        name: false,
+        phoneNumber: false,
+        password: false,
+        passwordConfirm: true,
+      };
+      let actual = runTest(inputValues);
+      console.log(`running test #1`);
+      console.log(`actual: ${JSON.stringify(actual)}`);
+      console.log(`expected: ${JSON.stringify(expected)}`);
+      console.log(`test:${compareResult(expected, actual)}`);
+
+      // test #2, exceed input (1)
+      inputValues = {
+        mail: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@b.c',
+        name: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+        phoneNumber: '000000000000000000000000000000000000000000000000',
+        password: '000000000000000000000000000',
+        passwordConfirm: '000000000000000000000000000',
+      };
+      expected = {
+        mail: false,
+        name: false,
+        phoneNumber: false,
+        password: false,
+        passwordConfirm: true,
+      };
+      actual = runTest(inputValues);
+      console.log(`running test #2`);
+      console.log(`actual: ${JSON.stringify(actual)}`);
+      console.log(`expected: ${JSON.stringify(expected)}`);
+      console.log(`test:${compareResult(expected, actual)}`);
+
+      // test #2, exceed input (2)
+      inputValues = {
+        mail: 'a@bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.c',
+      };
+      expected = {
+        mail: false,
+      };
+      actual = runTest(inputValues);
+      console.log(`running test #2`);
+      console.log(`actual: ${JSON.stringify(actual)}`);
+      console.log(`expected: ${JSON.stringify(expected)}`);
+      console.log(`test:${compareResult(expected, actual)}`);
+
+      // test #3, short input
+      inputValues = {
+        phoneNumber: '0',
+        password: '0',
+        passwordConfirm: '0',
+      };
+      expected = {
+        phoneNumber: false,
+        password: false,
+        passwordConfirm: true,
+      };
+      actual = runTest(inputValues);
+      console.log(`running test #3`);
+      console.log(`actual: ${JSON.stringify(actual)}`);
+      console.log(`expected: ${JSON.stringify(expected)}`);
+      console.log(`test:${compareResult(expected, actual)}`);
+
+      // test #4, regex (1)
+      inputValues = {
+        mail: 'a',
+        name: 'a b',
+        phoneNumber: '010-1234132',
+        password: '\n',
+        passwordConfirm: '\n',
+      };
+      expected = {
+        mail: false,
+        name: false,
+        phoneNumber: false,
+        password: false,
+        passwordConfirm: true,
+      };
+      actual = runTest(inputValues);
+      console.log(`running test #4`);
+      console.log(`actual: ${JSON.stringify(actual)}`);
+      console.log(`expected: ${JSON.stringify(expected)}`);
+      console.log(`test:${compareResult(expected, actual)}`);
+
+      // test #5, regex (2)
+      inputValues = {
+        mail: 'a@b@c',
+        name: '$',
+        phoneNumber: 'abcdefghijk',
+        password: '한글',
+        passwordConfirm: '한글',
+      };
+      expected = {
+        mail: false,
+        name: false,
+        phoneNumber: false,
+        password: false,
+        passwordConfirm: true,
+      };
+      actual = runTest(inputValues);
+      console.log(`running test #5`);
+      console.log(`actual: ${JSON.stringify(actual)}`);
+      console.log(`expected: ${JSON.stringify(expected)}`);
+      console.log(`test:${compareResult(expected, actual)}`);
+
+      // test #6, normal input
+      inputValues = {
+        mail: 'a@b.c',
+        name: 'name',
+        phoneNumber: '01012341234',
+        password: 'Normal!@#Pard123 ',
+        passwordConfirm: 'Normal!@#Pard123 ',
+      };
+      expected = {
+        mail: true,
+        name: true,
+        phoneNumber: true,
+        password: true,
+        passwordConfirm: true,
+      };
+      actual = runTest(inputValues);
+      console.log(`running test #6`);
+      console.log(`actual: ${JSON.stringify(actual)}`);
+      console.log(`expected: ${JSON.stringify(expected)}`);
+      console.log(`test:${compareResult(expected, actual)}`);
+    };
+
+    runAllTests();
+  </script>
 </html>
