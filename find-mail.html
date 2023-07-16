@@ -22,11 +22,12 @@
     </div>
     <div class="form-area">
       <h1>메일 찾기</h1>
-      <form class="login-form">
+      <form class="login-form" onsubmit="return validateForm();">
         <div>
           <div class="form-row">
             <div class="form-row-label-area">
               <span class="form-row-label">메일</span>
+              <span id="mail-notice" class="form-row-label-notice"></span>
             </div>
             <div class="form-row-input-area">
               <input
@@ -35,12 +36,17 @@
                 type="text"
                 name="mail"
                 placeholder="example@example.com"
+                onchange="validateMail()"
               />
             </div>
           </div>
           <div class="form-row">
             <div class="form-row-label-area">
               <span class="form-row-label">전화번호</span>
+              <span
+                id="phone-number-notice"
+                class="form-row-label-notice"
+              ></span>
             </div>
             <div class="form-row-input-area">
               <input
@@ -49,6 +55,7 @@
                 name="phone-number"
                 class="text-input"
                 placeholder="01012341234"
+                onchange="validatePhoneNumber()"
               />
             </div>
           </div>
