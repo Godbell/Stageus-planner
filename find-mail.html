@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stageus Planner</title>
+
+    <link rel="stylesheet" href="styles/general.css" />
+    <link rel="stylesheet" href="styles/signform.css" />
+  </head>
+  <body>
+    <div class="logo-area">
+      <a><img src="imgs/Stageus Logo.png" /></a>
+    </div>
+    <div class="form-area">
+      <h1>메일 찾기</h1>
+      <form class="login-form">
+        <div>
+          <div class="form-row">
+            <div class="form-row-label-area">
+              <span class="form-row-label">메일</span>
+            </div>
+            <div class="form-row-input-area">
+              <input
+                id="mail-input"
+                class="text-input"
+                type="text"
+                name="mail"
+                placeholder="example@example.com"
+              />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-row-label-area">
+              <span class="form-row-label">전화번호</span>
+            </div>
+            <div class="form-row-input-area">
+              <input
+                id="phone-number-input"
+                type="text"
+                name="phone-number"
+                class="text-input"
+                placeholder="01012341234"
+              />
+            </div>
+          </div>
+        </div>
+        <input type="submit" value="찾기" />
+      </form>
+    </div>
+  </body>
+  <script>
+    let validations = {
+      mail: false,
+      phoneNumber: false,
+    };
+
+    const showInputWarning = (inputSubject, message) => {
+      const inputElement = document.getElementById(`${inputSubject}-input`);
+      const noticeElement = document.getElementById(`${inputSubject}-notice`);
+
+      inputElement.classList.add('input-warning');
+      noticeElement.classList.add('notice-warning');
+      noticeElement.innerHTML = message;
+    };
+
+    const removeInputNotice = (inputSubject) => {
+      const inputElement = document.getElementById(`${inputSubject}-input`);
+      const noticeElement = document.getElementById(`${inputSubject}-notice`);
+
+      inputElement.classList.remove('input-warning');
+      inputElement.classList.remove('input-accepted');
+      noticeElement.classList.remove('notice-warning');
+      noticeElement.classList.remove('notice-accepted');
+      noticeElement.innerHTML = '';
+    };
+
+    const validateMail = () => {
+      removeInputNotice('mail');
+
+      const validationResult = isMailValid(
+        document.getElementById('mail-input').value
+      );
+      validations.mail = validationResult.isValid;
+      if (validationResult.isValid === false) {
+        showInputWarning('mail', validationResult.message);
+      }
+    };
+
+    const isMailValid = (mail) => {
+      const address = mail.split('@')[0] ?? '';
+      const domain = mail.split('@')[1] ?? '';
+
+      const regex = new RegExp(
+        '^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$'
+      );
+      if (mail.length == 0) {
+        return {
+          isValid: false,
+          message: '메일 주소를 입력해 주세요.',
+        };
+      } else if (address.length > 64 || domain.length > 255) {
+        return {
+          isValid: false,
+          message: '메일 주소가 너무 깁니다.',
+        };
+      } else if (!regex.test(mail)) {
+        return {
+          isValid: false,
+          message: '메일 주소는 example@example.com 형식이어야 합니다.',
+        };
+      } else {
+        return {
+          isValid: true,
+        };
+      }
+    };
+
+    const validatePhoneNumber = () => {
+      removeInputNotice('phone-number');
+      validations.phoneNumberDupChecked = false;
+
+      const validationResult = isPhoneNumberValid(
+        document.getElementById('phone-number-input').value
+      );
+      validations.phoneNumber = validationResult.isValid;
+      if (validationResult.isValid === false) {
+        showInputWarning('phone-number', validationResult.message);
+      }
+    };
+
+    const isPhoneNumberValid = (phoneNumber) => {
+      const regex = new RegExp('^[0-9]+$');
+
+      if (phoneNumber.length == 0) {
+        return {
+          isValid: false,
+          message: '전화번호를 입력해 주세요.',
+        };
+      } else if (!regex.test(phoneNumber)) {
+        return {
+          isValid: false,
+          message: '하이픈(-)을 제외한 숫자만 입력해 주세요.',
+        };
+      } else if (phoneNumber.length < 10 || phoneNumber.length > 11) {
+        return {
+          isValid: false,
+          message: '전화번호는 10자리 혹은 11자리만 가능합니다.',
+        };
+      } else {
+        return {
+          isValid: true,
+        };
+      }
+    };
+
+    const validateForm = () => {
+      event.preventDefault();
+      let result = true;
+
+      validateMail();
+      validatePhoneNumber();
+
+      if (
+        Object.values(validations).filter(
+          (validationResult) => validationResult === false
+        ).length > 0
+      ) {
+        result = false;
+      }
+
+      return result;
+    };
+
+    // test
+    const runTest = (inputValues) => {
+      let results = {
+        mail: undefined,
+        name: undefined,
+        phoneNumber: undefined,
+        password: undefined,
+        passwordConfirm: undefined,
+      };
+
+      if (inputValues.mail !== undefined) {
+        results.mail = isMailValid(inputValues.mail).isValid;
+      }
+
+      if (inputValues.name !== undefined) {
+        results.name = isNameValid(inputValues.name).isValid;
+      }
+
+      if (inputValues.phoneNumber !== undefined) {
+        results.phoneNumber = isPhoneNumberValid(
+          inputValues.phoneNumber
+        ).isValid;
+      }
+
+      if (inputValues.password !== undefined) {
+        results.password = isPasswordValid(inputValues.password).isValid;
+      }
+
+      if (inputValues.passwordConfirm !== undefined) {
+        results.passwordConfirm = isPasswordConfirmValid(
+          inputValues.password,
+          inputValues.passwordConfirm
+        ).isValid;
+      }
+
+      return results;
+    };
+
+    const compareResult = (expected, actual) => {
+      let result = 'SUCCEED';
+      for (key of Object.keys(actual)) {
+        if (actual[key] !== expected[key]) {
+          result = 'FAIL';
+          break;
+        }
+      }
+      return result;
+    };
+
+    const runAllTests = () => {
+      // test #1, blank input
+      let inputValues = {
+        mail: '',
+        phoneNumber: '',
+      };
+      let expected = {
+        mail: false,
+        phoneNumber: false,
+      };
+      let actual = runTest(inputValues);
+      console.log(`running test #1`);
+      console.log(`actual: ${JSON.stringify(actual)}`);
+      console.log(`expected: ${JSON.stringify(expected)}`);
+      console.log(`test:${compareResult(expected, actual)}`);
+
+      // test #2, exceed input (1)
+      inputValues = {
+        mail: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@b.c',
+        phoneNumber: '000000000000000000000000000000000000000000000000',
+      };
+      expected = {
+        mail: false,
+        phoneNumber: false,
+      };
+      actual = runTest(inputValues);
+      console.log(`running test #2`);
+      console.log(`actual: ${JSON.stringify(actual)}`);
+      console.log(`expected: ${JSON.stringify(expected)}`);
+      console.log(`test:${compareResult(expected, actual)}`);
+
+      // test #2, exceed input (2)
+      inputValues = {
+        mail: 'a@bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.c',
+      };
+      expected = {
+        mail: false,
+      };
+      actual = runTest(inputValues);
+      console.log(`running test #2`);
+      console.log(`actual: ${JSON.stringify(actual)}`);
+      console.log(`expected: ${JSON.stringify(expected)}`);
+      console.log(`test:${compareResult(expected, actual)}`);
+
+      // test #3, short input
+      inputValues = {
+        phoneNumber: '0',
+      };
+      expected = {
+        phoneNumber: false,
+      };
+      actual = runTest(inputValues);
+      console.log(`running test #3`);
+      console.log(`actual: ${JSON.stringify(actual)}`);
+      console.log(`expected: ${JSON.stringify(expected)}`);
+      console.log(`test:${compareResult(expected, actual)}`);
+
+      // test #4, regex (1)
+      inputValues = {
+        mail: 'a',
+        phoneNumber: '010-1234132',
+      };
+      expected = {
+        mail: false,
+        phoneNumber: false,
+      };
+      actual = runTest(inputValues);
+      console.log(`running test #4`);
+      console.log(`actual: ${JSON.stringify(actual)}`);
+      console.log(`expected: ${JSON.stringify(expected)}`);
+      console.log(`test:${compareResult(expected, actual)}`);
+
+      // test #5, regex (2)
+      inputValues = {
+        mail: 'a@b@c',
+        phoneNumber: 'abcdefghijk',
+      };
+      expected = {
+        mail: false,
+        phoneNumber: false,
+      };
+      actual = runTest(inputValues);
+      console.log(`running test #5`);
+      console.log(`actual: ${JSON.stringify(actual)}`);
+      console.log(`expected: ${JSON.stringify(expected)}`);
+      console.log(`test:${compareResult(expected, actual)}`);
+
+      // test #6, normal input
+      inputValues = {
+        mail: 'a@b.c',
+        phoneNumber: '01012341234',
+      };
+      expected = {
+        mail: true,
+        phoneNumber: true,
+      };
+      actual = runTest(inputValues);
+      console.log(`running test #6`);
+      console.log(`actual: ${JSON.stringify(actual)}`);
+      console.log(`expected: ${JSON.stringify(expected)}`);
+      console.log(`test:${compareResult(expected, actual)}`);
+    };
+
+    runAllTests();
+  </script>
+</html>
