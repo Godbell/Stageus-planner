@@ -363,7 +363,6 @@ nav {
   grid-template-rows: repeat(4, 51px);
   text-align: center;
   justify-content: center;
-  visibility: hidden;
 }
 
 #month-modal-selectbox {
@@ -374,5 +373,26 @@ nav {
   grid-template-rows: repeat(12, 51px);
   text-align: center;
   justify-content: center;
-  visibility: hidden;
+}
+
+@media screen and (max-width: 768px) {
+  main {
+    width: 100%;
+  }
+
+  .filter-menu {
+    height: 87px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #year-modal-selectbox {
+    top: 87px;
+  }
+
+  #month-modal-selectbox {
+    top: 48px;
+  }
 }
