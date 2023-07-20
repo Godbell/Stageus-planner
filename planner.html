@@ -21,7 +21,7 @@
         <a class="logo"><img src="imgs/Stageus Logo.png" /></a>
         <a class="new-plan-button">새 일정</a>
       </div>
-      <button class="hamburger-button">
+      <button id="nav-button" class="hamburger-button">
         <svg
           width="22"
           height="17"
@@ -61,7 +61,7 @@
     </div>
     <div class="filter-menu">
       <div class="filter-area">
-        <button class="year-modifier-button">
+        <button id="year-decrease-button" class="year-modifier-button">
           <svg
             width="22"
             height="27"
@@ -75,8 +75,9 @@
             />
           </svg>
         </button>
-        <div class="filter-menu-selector">
-          <span class="filter-menu-selector-text">2023</span>
+        <div id="year-selector" class="filter-menu-selector">
+          <span id="year-selector-text" class="filter-menu-selector-text">
+          </span>
           <svg
             width="15"
             height="9"
@@ -88,7 +89,7 @@
           </svg>
         </div>
         <span class="filter-menu-label">년</span>
-        <button class="year-modifier-button">
+        <button id="year-increase-button" class="year-modifier-button">
           <svg
             width="22"
             height="27"
@@ -124,8 +125,9 @@
         </div>
       </div>
       <div class="filter-area">
-        <div class="filter-menu-selector">
-          <span class="filter-menu-selector-text">07</span>
+        <div id="month-selector" class="filter-menu-selector">
+          <span id="month-selector-text" class="filter-menu-selector-text">
+          </span>
           <svg
             width="15"
             height="9"
@@ -306,4 +308,85 @@
       </div>
     </nav>
   </body>
+  <script>
+    const getURLParam = (paramNameToFind) => {
+      // ...://location/to/the/page ? paramNameToFind=value&other=value
+      const queryString = window.location.href.split('?')[1];
+      if (queryString === undefined) return undefined;
+
+      // paramNameToFind=value & other=value
+      const params = queryString.split('&');
+
+      for (let param of params) {
+        // paramNameToFind = value
+        const paramName = param.split('=')[0];
+        const paramValue = param.split('=')[1];
+
+        if (paramName == paramNameToFind) return paramValue;
+      }
+
+      return undefined;
+    };
+
+    // date filter
+    const dateNow = new Date(Date.now());
+    const filterYear = getURLParam('year') ?? dateNow.getFullYear();
+    const filterMonthString =
+      getURLParam('month') ?? String(dateNow.getMonth() + 1).padStart(2, '0');
+
+    const yearText = document.getElementById('year-selector-text');
+    yearText.innerHTML = String(filterYear);
+    const monthText = document.getElementById('month-selector-text');
+    monthText.innerHTML = filterMonthString;
+
+    const yearSelectButton = document.getElementById('year-selector');
+    const yearModalSelectBox = document.getElementById('year-modal-selectbox');
+    yearModalSelectBox.style.visibility = 'hidden';
+
+    const showYearModalSelectBox = () => {
+      yearModalSelectBox.style.visibility = 'visible';
+      yearSelectButton.removeEventListener('click', showYearModalSelectBox);
+      yearSelectButton.addEventListener('click', hideYearModalSelectBox);
+    };
+    const hideYearModalSelectBox = () => {
+      yearModalSelectBox.style.visibility = 'hidden';
+      yearSelectButton.removeEventListener('click', hideYearModalSelectBox);
+      yearSelectButton.addEventListener('click', showYearModalSelectBox);
+    };
+    yearSelectButton.addEventListener('click', showYearModalSelectBox);
+
+    const monthSelectButton = document.getElementById('month-selector');
+    const monthModalSelectBox = document.getElementById(
+      'month-modal-selectbox'
+    );
+    monthModalSelectBox.style.visibility = 'hidden';
+
+    const showMonthModalSelectBox = () => {
+      monthModalSelectBox.style.visibility = 'visible';
+      monthSelectButton.removeEventListener('click', showMonthModalSelectBox);
+      monthSelectButton.addEventListener('click', hideMonthModalSelectBox);
+    };
+    const hideMonthModalSelectBox = () => {
+      monthModalSelectBox.style.visibility = 'hidden';
+      monthSelectButton.removeEventListener('click', hideMonthModalSelectBox);
+      monthSelectButton.addEventListener('click', showMonthModalSelectBox);
+    };
+    monthSelectButton.addEventListener('click', showMonthModalSelectBox);
+
+    // nav
+    const nav = document.getElementsByTagName('nav')[0];
+    const navButton = document.getElementById('nav-button');
+
+    const showNav = () => {
+      nav.style.visibility = 'visible';
+      navButton.removeEventListener('click', showNav);
+      navButton.addEventListener('click', hideNav);
+    };
+    const hideNav = () => {
+      nav.style.visibility = 'hidden';
+      navButton.removeEventListener('click', hideNav);
+      navButton.addEventListener('click', showNav);
+    };
+    navButton.addEventListener('click', showNav);
+  </script>
 </html>
