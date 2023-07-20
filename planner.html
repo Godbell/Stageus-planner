@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plans</title>
+
+    <link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="stylesheet" href="styles/general.css" />
+    <link rel="stylesheet" href="styles/planner.css" />
+  </head>
+  <body>
+    <div class="logo-area">
+      <div class="logo-area-section">
+        <a class="logo"><img src="imgs/Stageus Logo.png" /></a>
+        <a class="new-plan-button">새 일정</a>
+      </div>
+      <button class="hamburger-button">
+        <svg
+          width="22"
+          height="17"
+          viewBox="0 0 22 17"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <line
+            x1="1.5"
+            y1="1.5"
+            x2="20.5"
+            y2="1.5"
+            stroke="white"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+          <line
+            x1="1.5"
+            y1="8.5"
+            x2="20.5"
+            y2="8.5"
+            stroke="white"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+          <line
+            x1="1.5"
+            y1="15.5"
+            x2="20.5"
+            y2="15.5"
+            stroke="white"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+    </div>
+    <div class="filter-menu">
+      <div class="filter-area">
+        <button class="year-modifier-button">
+          <svg
+            width="22"
+            height="27"
+            viewBox="0 0 22 27"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1.72911e-07 13.5L21.75 0.942631L21.75 26.0574L1.72911e-07 13.5Z"
+              fill="#1A1D63"
+            />
+          </svg>
+        </button>
+        <div class="filter-menu-selector">
+          <span class="filter-menu-selector-text">2023</span>
+          <svg
+            width="15"
+            height="9"
+            viewBox="0 0 15 9"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M1.5 1L7.5 7L13.5 1" stroke="white" stroke-width="2" />
+          </svg>
+        </div>
+        <span class="filter-menu-label">년</span>
+        <button class="year-modifier-button">
+          <svg
+            width="22"
+            height="27"
+            viewBox="0 0 22 27"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M22 13.5L0.250001 26.0574L0.250002 0.942631L22 13.5Z"
+              fill="#1A1D63"
+            />
+          </svg>
+        </button>
+        <div id="year-modal-selectbox" class="modal-selectbox">
+          <span class="modal-selectbox-item modal-selectbox-item-selected">
+            2000
+          </span>
+          <span class="modal-selectbox-item">2000</span>
+          <span class="modal-selectbox-item">2000</span>
+          <span class="modal-selectbox-item">2000</span>
+          <span class="modal-selectbox-item">2000</span>
+          <span class="modal-selectbox-item">2000</span>
+          <span class="modal-selectbox-item">2000</span>
+          <span class="modal-selectbox-item">2000</span>
+          <span class="modal-selectbox-item">2000</span>
+          <span class="modal-selectbox-item">2000</span>
+          <span class="modal-selectbox-item">2000</span>
+          <span class="modal-selectbox-item">2000</span>
+          <span class="modal-selectbox-item">2000</span>
+          <span class="modal-selectbox-item">2000</span>
+          <span class="modal-selectbox-item">2000</span>
+          <span class="modal-selectbox-item">2000</span>
+        </div>
+      </div>
+      <div class="filter-area">
+        <div class="filter-menu-selector">
+          <span class="filter-menu-selector-text">07</span>
+          <svg
+            width="15"
+            height="9"
+            viewBox="0 0 15 9"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M1.5 1L7.5 7L13.5 1" stroke="white" stroke-width="2" />
+          </svg>
+        </div>
+        <span class="filter-menu-label">월</span>
+        <div id="month-modal-selectbox" class="modal-selectbox">
+          <span class="modal-selectbox-item modal-selectbox-item-selected">
+            01
+          </span>
+          <span class="modal-selectbox-item">02</span>
+          <span class="modal-selectbox-item">03</span>
+          <span class="modal-selectbox-item">04</span>
+          <span class="modal-selectbox-item">05</span>
+          <span class="modal-selectbox-item">06</span>
+          <span class="modal-selectbox-item">07</span>
+          <span class="modal-selectbox-item">08</span>
+          <span class="modal-selectbox-item">09</span>
+          <span class="modal-selectbox-item">10</span>
+          <span class="modal-selectbox-item">11</span>
+          <span class="modal-selectbox-item">12</span>
+        </div>
+      </div>
+    </div>
+    <main>
+      <section>
+        <span class="day-label">9일</span>
+        <span class="day-name-label">(화)</span>
+        <hr class="devider" />
+        <article class="past-plan">
+          <span class="plan-time">09:10</span>
+          <span class="plan-content">준비 시간</span>
+          <button class="plan-button">
+            <svg
+              width="25"
+              height="26"
+              viewBox="0 0 25 26"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M23.5 7L19 2L1 20V24.5H6L23.5 7Z" stroke-width="2" />
+            </svg>
+          </button>
+          <button class="plan-button">
+            <svg
+              width="26"
+              height="26"
+              viewBox="0 0 26 26"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M1 1L25 25M25 1L1 25" stroke-width="2" />
+            </svg>
+          </button>
+        </article>
+      </section>
+      <section>
+        <span class="day-label">10일</span>
+        <span class="day-name-label">(수)</span>
+        <hr class="devider" />
+        <article>
+          <span class="plan-time">09:10</span>
+          <span class="plan-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
+            sed hendrerit tortor. D
+          </span>
+          <button class="plan-button">
+            <svg
+              width="25"
+              height="26"
+              viewBox="0 0 25 26"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M23.5 7L19 2L1 20V24.5H6L23.5 7Z" stroke-width="2" />
+            </svg>
+          </button>
+          <button class="plan-button">
+            <svg
+              width="26"
+              height="26"
+              viewBox="0 0 26 26"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M1 1L25 25M25 1L1 25" stroke-width="2" />
+            </svg>
+          </button>
+        </article>
+      </section>
+    </main>
+    <nav>
+      <div class="nav-menu">
+        <div class="nav-menu-profile">
+          <h1>내 정보</h1>
+          <div class="nav-menu-profile-row">
+            <span class="nav-menu-profile-row-label">메일</span>
+            <span class="nav-menu-profile-row-value">example@example.com</span>
+          </div>
+          <div class="nav-menu-profile-row">
+            <span class="nav-menu-profile-row-label">이름</span>
+            <span class="nav-menu-profile-row-value">스어스</span>
+          </div>
+          <div class="nav-menu-profile-row">
+            <span class="nav-menu-profile-row-label">전화번호</span>
+            <span class="nav-menu-profile-row-value">01012341234</span>
+          </div>
+          <div class="nav-menu-profile-row">
+            <span class="nav-menu-profile-row-label">직급</span>
+            <span class="nav-menu-profile-row-value">팀장</span>
+          </div>
+        </div>
+        <div class="nav-menu-member-list">
+          <h1>직원 목록</h1>
+          <div class="nav-menu-member-list-content">
+            <a class="nav-menu-member-button" href="#">
+              직원1 (example@example.com)
+            </a>
+            <a class="nav-menu-member-button" href="#">
+              직원1 (example@example.com)
+            </a>
+            <a class="nav-menu-member-button" href="#">
+              직원1 (example@example.com)
+            </a>
+            <a class="nav-menu-member-button" href="#">
+              직원1 (example@example.com)
+            </a>
+            <a class="nav-menu-member-button" href="#">
+              직원1 (example@example.com)
+            </a>
+            <a class="nav-menu-member-button" href="#">
+              직원1 (example@example.com)
+            </a>
+            <a class="nav-menu-member-button" href="#">
+              직원1 (example@example.com)
+            </a>
+            <a class="nav-menu-member-button" href="#">
+              직원1 (example@example.com)
+            </a>
+            <a class="nav-menu-member-button" href="#">
+              직원1 (example@example.com)
+            </a>
+            <a class="nav-menu-member-button" href="#">
+              직원1 (example@example.com)
+            </a>
+            <a class="nav-menu-member-button" href="#">
+              직원1 (example@example.com)
+            </a>
+            <a class="nav-menu-member-button" href="#">
+              직원1 (example@example.com)
+            </a>
+            <a class="nav-menu-member-button" href="#">
+              직원1 (example@example.com)
+            </a>
+            <a class="nav-menu-member-button" href="#">
+              직원1 (example@example.com)
+            </a>
+            <a class="nav-menu-member-button" href="#">
+              직원1 (example@example.com)
+            </a>
+            <a class="nav-menu-member-button" href="#">
+              직원1 (example@example.com)
+            </a>
+            <a class="nav-menu-member-button" href="#">
+              직원1 (example@example.com)
+            </a>
+            <a class="nav-menu-member-button" href="#">
+              직원1 (example@example.com)
+            </a>
+          </div>
+        </div>
+        <div class="nav-menu-signout-button">로그아웃</div>
+      </div>
+    </nav>
+  </body>
+</html>
