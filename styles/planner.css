@@ -230,7 +230,6 @@ nav {
   flex-direction: row;
   justify-content: flex-end;
   z-index: 2000;
-  visibility: hidden;
 }
 
 .nav-menu {
