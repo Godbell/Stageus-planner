@@ -63,7 +63,7 @@
     </div>
     <div class="filter-menu">
       <div class="filter-area">
-        <button id="year-decrease-button" class="year-modifier-button">
+        <a id="year-decrease-button" class="year-modifier-button">
           <svg
             width="22"
             height="27"
@@ -76,7 +76,7 @@
               fill="#1A1D63"
             />
           </svg>
-        </button>
+        </a>
         <div id="year-selector" class="filter-menu-selector">
           <span id="year-selector-text" class="filter-menu-selector-text">
           </span>
@@ -91,7 +91,7 @@
           </svg>
         </div>
         <span class="filter-menu-label">년</span>
-        <button id="year-increase-button" class="year-modifier-button">
+        <a id="year-increase-button" class="year-modifier-button">
           <svg
             width="22"
             height="27"
@@ -104,7 +104,7 @@
               fill="#1A1D63"
             />
           </svg>
-        </button>
+        </a>
         <div id="year-modal-selectbox" class="modal-selectbox">
           <button
             id="year-modal-selectbox-left-scroll-button"
@@ -364,6 +364,16 @@
     };
     yearSelectButton.addEventListener('click', showYearModalSelectBox);
 
+    // year filter modifier buttons
+    const yearDecreaseButton = document.getElementById('year-decrease-button');
+    yearDecreaseButton.href = `/stageus-planner/planner.html?year=${
+      Number(filterYear) - 1
+    }&month=${filterMonth}`;
+    const yearIncreaseButton = document.getElementById('year-increase-button');
+    yearIncreaseButton.href = `/stageus-planner/planner.html?year=${
+      Number(filterYear) + 1
+    }&month=${filterMonth}`;
+
     // year filter content
     let currentYearModalSelectBoxIndex = 0;
     let yearModalSeletBoxContents = {};
@@ -376,6 +386,7 @@
         const yearButton = document.createElement('a');
         yearButton.classList.add('modal-selectbox-item');
         yearButton.innerHTML = String(year);
+        yearButton.href = `/stageus-planner/planner.html?year=${yearButton.innerText}&month=${filterMonth}`;
         if (year === Number(filterYear)) {
           yearButton.classList.add('modal-selectbox-item-selected');
         }
@@ -447,8 +458,18 @@
     };
     monthSelectButton.addEventListener('click', showMonthModalSelectBox);
 
+    const monthButtons = Array.from(
+      document.querySelectorAll(
+        '#month-modal-selectbox > .modal-selectbox-item'
+      )
+    );
+    monthButtons.forEach((monthButton) => {
+      monthButton.href = `/stageus-planner/planner.html?year=${filterYear}&month=${monthButton.innerText}`;
+    });
+
     // nav
     const nav = document.getElementsByTagName('nav')[0];
+    nav.style.display = 'none';
     const navButton = document.getElementById('nav-button');
 
     const showNav = () => {
