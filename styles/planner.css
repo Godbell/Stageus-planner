@@ -328,16 +328,16 @@ nav {
 
 .modal-selectbox {
   position: absolute;
+  left: -24.5px;
+  right: 0;
   top: 44px;
   background-color: white;
   overflow-y: scroll;
   padding-top: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
   border-radius: 7px;
   box-shadow: 0 0 6px #878787;
-  display: grid;
-  justify-items: center;
 }
 
 .modal-selectbox::-webkit-scrollbar {
@@ -354,33 +354,63 @@ nav {
   width: 49px;
   height: 49px;
   color: black;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
+.modal-selectbox-item:hover,
 .modal-selectbox-item-selected {
   background-color: var(--main-color);
-  border-radius: 50%;
   color: white;
 }
 
 #year-modal-selectbox {
   width: 236px;
-  height: fit-content;
-  left: -24.5px;
-  right: 0;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(4, 51px);
-  text-align: center;
-  justify-content: center;
+  height: 210px;
+  overflow: hidden;
 }
 
 #month-modal-selectbox {
   width: 90px;
   height: 200px;
   left: 13.5px;
+  display: grid;
+  justify-items: center;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(12, 51px);
   text-align: center;
   justify-content: center;
+}
+
+.year-modal-selectbox-scroll-button {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-size: 20px;
+}
+
+#year-modal-selectbox-left-scroll-button {
+  left: 5px;
+}
+
+#year-modal-selectbox-right-scroll-button {
+  right: 5px;
+}
+
+.year-modal-selectbox-content {
+  width: fit-content;
+  height: fit-content;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 51px);
+  text-align: center;
+  justify-content: center;
+  position: absolute;
+  transition-property: all;
+  transition-duration: 0.5s;
 }
 
 @media screen and (max-width: 768px) {

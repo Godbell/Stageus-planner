@@ -104,24 +104,18 @@
           </svg>
         </button>
         <div id="year-modal-selectbox" class="modal-selectbox">
-          <span class="modal-selectbox-item modal-selectbox-item-selected">
-            2000
-          </span>
-          <span class="modal-selectbox-item">2000</span>
-          <span class="modal-selectbox-item">2000</span>
-          <span class="modal-selectbox-item">2000</span>
-          <span class="modal-selectbox-item">2000</span>
-          <span class="modal-selectbox-item">2000</span>
-          <span class="modal-selectbox-item">2000</span>
-          <span class="modal-selectbox-item">2000</span>
-          <span class="modal-selectbox-item">2000</span>
-          <span class="modal-selectbox-item">2000</span>
-          <span class="modal-selectbox-item">2000</span>
-          <span class="modal-selectbox-item">2000</span>
-          <span class="modal-selectbox-item">2000</span>
-          <span class="modal-selectbox-item">2000</span>
-          <span class="modal-selectbox-item">2000</span>
-          <span class="modal-selectbox-item">2000</span>
+          <button
+            id="year-modal-selectbox-left-scroll-button"
+            class="year-modal-selectbox-scroll-button"
+          >
+            <
+          </button>
+          <button
+            id="year-modal-selectbox-right-scroll-button"
+            class="year-modal-selectbox-scroll-button"
+          >
+            >
+          </button>
         </div>
       </div>
       <div class="filter-area">
@@ -140,20 +134,18 @@
         </div>
         <span class="filter-menu-label">월</span>
         <div id="month-modal-selectbox" class="modal-selectbox">
-          <span class="modal-selectbox-item modal-selectbox-item-selected">
-            01
-          </span>
-          <span class="modal-selectbox-item">02</span>
-          <span class="modal-selectbox-item">03</span>
-          <span class="modal-selectbox-item">04</span>
-          <span class="modal-selectbox-item">05</span>
-          <span class="modal-selectbox-item">06</span>
-          <span class="modal-selectbox-item">07</span>
-          <span class="modal-selectbox-item">08</span>
-          <span class="modal-selectbox-item">09</span>
-          <span class="modal-selectbox-item">10</span>
-          <span class="modal-selectbox-item">11</span>
-          <span class="modal-selectbox-item">12</span>
+          <a class="modal-selectbox-item modal-selectbox-item-selected">01</a>
+          <a class="modal-selectbox-item">02</a>
+          <a class="modal-selectbox-item">03</a>
+          <a class="modal-selectbox-item">04</a>
+          <a class="modal-selectbox-item">05</a>
+          <a class="modal-selectbox-item">06</a>
+          <a class="modal-selectbox-item">07</a>
+          <a class="modal-selectbox-item">08</a>
+          <a class="modal-selectbox-item">09</a>
+          <a class="modal-selectbox-item">10</a>
+          <a class="modal-selectbox-item">11</a>
+          <a class="modal-selectbox-item">12</a>
         </div>
       </div>
     </div>
@@ -328,46 +320,126 @@
       return undefined;
     };
 
-    // date filter
+    // date filter init
     const dateNow = new Date(Date.now());
-    const filterYear = getURLParam('year') ?? dateNow.getFullYear();
-    const filterMonthString =
-      getURLParam('month') ?? String(dateNow.getMonth() + 1).padStart(2, '0');
+    const filterYear = String(getURLParam('year') ?? dateNow.getFullYear());
+    const filterMonth =
+      getURLParam('month').padStart(2, '0') ??
+      String(dateNow.getMonth() + 1).padStart(2, '0');
 
     const yearText = document.getElementById('year-selector-text');
-    yearText.innerHTML = String(filterYear);
+    yearText.innerHTML = filterYear;
     const monthText = document.getElementById('month-selector-text');
-    monthText.innerHTML = filterMonthString;
+    monthText.innerHTML = filterMonth;
 
+    // year filter
     const yearSelectButton = document.getElementById('year-selector');
     const yearModalSelectBox = document.getElementById('year-modal-selectbox');
-    yearModalSelectBox.style.visibility = 'hidden';
+    yearModalSelectBox.style.display = 'none';
 
     const showYearModalSelectBox = () => {
-      yearModalSelectBox.style.visibility = 'visible';
+      yearModalSelectBox.style.display = '';
+      const contentItems = document.getElementsByClassName(
+        'year-modal-selectbox-content'
+      );
+      Array.from(contentItems).forEach((item) => {
+        item.style.display = '';
+      });
       yearSelectButton.removeEventListener('click', showYearModalSelectBox);
       yearSelectButton.addEventListener('click', hideYearModalSelectBox);
+      hideMonthModalSelectBox();
     };
     const hideYearModalSelectBox = () => {
-      yearModalSelectBox.style.visibility = 'hidden';
+      yearModalSelectBox.style.display = 'none';
+      const contentItems = document.getElementsByClassName(
+        'year-modal-selectbox-content'
+      );
+      Array.from(contentItems).forEach((item) => {
+        item.style.display = 'none';
+      });
       yearSelectButton.removeEventListener('click', hideYearModalSelectBox);
       yearSelectButton.addEventListener('click', showYearModalSelectBox);
     };
     yearSelectButton.addEventListener('click', showYearModalSelectBox);
 
+    // year filter content
+    let currentYearModalSelectBoxIndex = 0;
+    let yearModalSeletBoxContents = {};
+    const createYearModalSelectBoxContent = (yearStart, index) => {
+      const contentPosition = `${20 + 236 * index}px`;
+      const yearModalSelectBoxContent = document.createElement('div');
+      yearModalSelectBoxContent.classList.add('year-modal-selectbox-content');
+      yearModalSelectBoxContent.style.left = contentPosition;
+      for (let year = yearStart; year < yearStart + 16; year++) {
+        const yearButton = document.createElement('a');
+        yearButton.classList.add('modal-selectbox-item');
+        yearButton.innerHTML = String(year);
+        if (year === Number(filterYear)) {
+          yearButton.classList.add('modal-selectbox-item-selected');
+        }
+        // yearButton.href = `/planner.jsp?year=${year}&month=${filterMonth}
+        yearModalSelectBoxContent.appendChild(yearButton);
+      }
+      yearModalSeletBoxContents[index] = yearModalSelectBoxContent;
+
+      return yearModalSelectBoxContent;
+    };
+
+    for (let i = -5; i < 6; i++) {
+      yearModalSelectBox.appendChild(
+        createYearModalSelectBoxContent(Number(filterYear) + 16 * i, i)
+      );
+    }
+
+    // year filter transition
+    const yearFilterLeftScrollButton = document.getElementById(
+      'year-modal-selectbox-left-scroll-button'
+    );
+    yearFilterLeftScrollButton.addEventListener('click', () => {
+      if (
+        yearModalSeletBoxContents[currentYearModalSelectBoxIndex - 1] !==
+        undefined
+      ) {
+        currentYearModalSelectBoxIndex--;
+        for (let index of Object.keys(yearModalSeletBoxContents)) {
+          yearModalSeletBoxContents[index].style.left = `${
+            20 + 236 * (index - currentYearModalSelectBoxIndex)
+          }px`;
+        }
+      }
+    });
+    const yearFilterRightScrollButton = document.getElementById(
+      'year-modal-selectbox-right-scroll-button'
+    );
+    yearFilterRightScrollButton.addEventListener('click', () => {
+      if (
+        yearModalSeletBoxContents[currentYearModalSelectBoxIndex + 1] !==
+        undefined
+      ) {
+        currentYearModalSelectBoxIndex++;
+        for (let index of Object.keys(yearModalSeletBoxContents)) {
+          yearModalSeletBoxContents[index].style.left = `${
+            20 + 236 * (index - currentYearModalSelectBoxIndex)
+          }px`;
+        }
+      }
+    });
+
+    // month filter
     const monthSelectButton = document.getElementById('month-selector');
     const monthModalSelectBox = document.getElementById(
       'month-modal-selectbox'
     );
-    monthModalSelectBox.style.visibility = 'hidden';
+    monthModalSelectBox.style.display = 'none';
 
     const showMonthModalSelectBox = () => {
-      monthModalSelectBox.style.visibility = 'visible';
+      monthModalSelectBox.style.display = '';
       monthSelectButton.removeEventListener('click', showMonthModalSelectBox);
       monthSelectButton.addEventListener('click', hideMonthModalSelectBox);
+      hideYearModalSelectBox();
     };
     const hideMonthModalSelectBox = () => {
-      monthModalSelectBox.style.visibility = 'hidden';
+      monthModalSelectBox.style.display = 'none';
       monthSelectButton.removeEventListener('click', hideMonthModalSelectBox);
       monthSelectButton.addEventListener('click', showMonthModalSelectBox);
     };
@@ -378,12 +450,12 @@
     const navButton = document.getElementById('nav-button');
 
     const showNav = () => {
-      nav.style.visibility = 'visible';
+      nav.style.display = '';
       navButton.removeEventListener('click', showNav);
       navButton.addEventListener('click', hideNav);
     };
     const hideNav = () => {
-      nav.style.visibility = 'hidden';
+      nav.style.display = 'none';
       navButton.removeEventListener('click', hideNav);
       navButton.addEventListener('click', showNav);
     };
