@@ -30,3 +30,7 @@ button {
   padding: 0;
   background-color: transparent;
 }
+
+a:any-link {
+  text-decoration: none;
+}
