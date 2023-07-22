@@ -20,58 +20,13 @@
         <a class="new-plan-button">새 일정</a>
       </div>
       <button id="nav-button" class="hamburger-button">
-        <svg
-          width="22"
-          height="17"
-          viewBox="0 0 22 17"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <line
-            x1="1.5"
-            y1="1.5"
-            x2="20.5"
-            y2="1.5"
-            stroke="white"
-            stroke-width="3"
-            stroke-linecap="round"
-          />
-          <line
-            x1="1.5"
-            y1="8.5"
-            x2="20.5"
-            y2="8.5"
-            stroke="white"
-            stroke-width="3"
-            stroke-linecap="round"
-          />
-          <line
-            x1="1.5"
-            y1="15.5"
-            x2="20.5"
-            y2="15.5"
-            stroke="white"
-            stroke-width="3"
-            stroke-linecap="round"
-          />
-        </svg>
+        <img src="/stageus-planner/icons/planner_hamburger.svg">
       </button>
     </div>
     <div class="filter-menu">
       <div class="filter-area">
         <a id="year-decrease-button" class="year-modifier-button">
-          <svg
-            width="22"
-            height="27"
-            viewBox="0 0 22 27"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M1.72911e-07 13.5L21.75 0.942631L21.75 26.0574L1.72911e-07 13.5Z"
-              fill="#1A1D63"
-            />
-          </svg>
+          <img src="/stageus-planner/icons/planner_year_decrease.svg">
         </a>
         <div id="year-selector" class="filter-menu-selector">
           <span id="year-selector-text" class="filter-menu-selector-text">
@@ -88,18 +43,7 @@
         </div>
         <span class="filter-menu-label">년</span>
         <a id="year-increase-button" class="year-modifier-button">
-          <svg
-            width="22"
-            height="27"
-            viewBox="0 0 22 27"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M22 13.5L0.250001 26.0574L0.250002 0.942631L22 13.5Z"
-              fill="#1A1D63"
-            />
-          </svg>
+          <img src="/stageus-planner/icons/planner_year_increase.svg">
         </a>
         <div id="year-modal-selectbox" class="modal-selectbox">
           <button
@@ -195,7 +139,6 @@
               height="26"
               viewBox="0 0 25 26"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
             >
               <path d="M23.5 7L19 2L1 20V24.5H6L23.5 7Z" stroke-width="2" />
             </svg>
@@ -206,7 +149,6 @@
               height="26"
               viewBox="0 0 26 26"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
             >
               <path d="M1 1L25 25M25 1L1 25" stroke-width="2" />
             </svg>
