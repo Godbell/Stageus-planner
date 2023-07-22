@@ -73,98 +73,11 @@
       </div>
     </div>
   </body>
+  <script src="/stageus-planner/scripts/signform.js"></script>
   <script>
     let validations = {
       mail: false,
       password: false,
-    };
-
-    const showInputWarning = (inputSubject, message) => {
-      const inputElement = document.getElementById(`${inputSubject}-input`);
-      const noticeElement = document.getElementById(`${inputSubject}-notice`);
-
-      inputElement.classList.add('input-warning');
-      noticeElement.classList.add('notice-warning');
-      noticeElement.innerHTML = message;
-    };
-
-    const removeInputNotice = (inputSubject) => {
-      const inputElement = document.getElementById(`${inputSubject}-input`);
-      const noticeElement = document.getElementById(`${inputSubject}-notice`);
-
-      inputElement.classList.remove('input-warning');
-      inputElement.classList.remove('input-accepted');
-      noticeElement.classList.remove('notice-warning');
-      noticeElement.classList.remove('notice-accepted');
-      noticeElement.innerHTML = '';
-    };
-
-    const validateMail = () => {
-      removeInputNotice('mail');
-
-      const validationResult = isMailValid(
-        document.getElementById('mail-input').value
-      );
-      validations.mail = validationResult.isValid;
-      if (validationResult.isValid === false) {
-        showInputWarning('mail', validationResult.message);
-      }
-    };
-
-    const isMailValid = (mail) => {
-      const address = mail.split('@')[0] ?? '';
-      const domain = mail.split('@')[1] ?? '';
-
-      const regex = new RegExp(
-        '^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$'
-      );
-      if (mail.length == 0) {
-        return {
-          isValid: false,
-          message: '메일 주소를 입력해 주세요.',
-        };
-      } else if (address.length > 64 || domain.length > 255) {
-        return {
-          isValid: false,
-          message: '메일 주소가 너무 깁니다.',
-        };
-      } else if (!regex.test(mail)) {
-        return {
-          isValid: false,
-          message: '메일 주소는 example@example.com 형식이어야 합니다.',
-        };
-      } else {
-        return {
-          isValid: true,
-        };
-      }
-    };
-
-    const validatePassword = () => {
-      removeInputNotice('password');
-
-      const validationResult = isPasswordValid(
-        document.getElementById('password-input').value
-      );
-      validations.password = validationResult.isValid;
-      if (validationResult.isValid === false) {
-        showInputWarning('password', validationResult.message);
-      }
-    };
-
-    const isPasswordValid = (password) => {
-      const regex = new RegExp('^[ -~]+$');
-
-      if (password.length == 0) {
-        return {
-          isValid: false,
-          message: '비밀번호를 입력해 주세요.',
-        };
-      } else {
-        return {
-          isValid: true,
-        };
-      }
     };
 
     const validateForm = () => {

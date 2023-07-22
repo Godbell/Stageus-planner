@@ -61,103 +61,11 @@
       </form>
     </div>
   </body>
+  <script src="/stageus-planner/scripts/signform.js"></script>
   <script>
     let validations = {
       name: false,
       phoneNumber: false,
-    };
-
-    const showInputWarning = (inputSubject, message) => {
-      const inputElement = document.getElementById(`${inputSubject}-input`);
-      const noticeElement = document.getElementById(`${inputSubject}-notice`);
-
-      inputElement.classList.add('input-warning');
-      noticeElement.classList.add('notice-warning');
-      noticeElement.innerHTML = message;
-    };
-
-    const removeInputNotice = (inputSubject) => {
-      const inputElement = document.getElementById(`${inputSubject}-input`);
-      const noticeElement = document.getElementById(`${inputSubject}-notice`);
-
-      inputElement.classList.remove('input-warning');
-      inputElement.classList.remove('input-accepted');
-      noticeElement.classList.remove('notice-warning');
-      noticeElement.classList.remove('notice-accepted');
-      noticeElement.innerHTML = '';
-    };
-
-    const validateName = () => {
-      removeInputNotice('name');
-      const validationResult = isNameValid(
-        document.getElementById('name-input').value
-      );
-      validations.name = validationResult.isValid;
-      if (validationResult.isValid === false) {
-        showInputWarning('name', validationResult.message);
-      }
-    };
-
-    const isNameValid = (name) => {
-      const regex = new RegExp('^[a-zA-Z가-힣]+$');
-
-      if (name.length == 0) {
-        return {
-          isValid: false,
-          message: '이름을 입력해 주세요.',
-        };
-      } else if (name.length > 20) {
-        return {
-          isValid: false,
-          message: '이름은 최대 20자까지 입력 가능합니다.',
-        };
-      } else if (!regex.test(name)) {
-        return {
-          isValid: false,
-          message: '영문, 한글 완성형만 입력 가능합니다.',
-        };
-      } else {
-        return {
-          isValid: true,
-        };
-      }
-    };
-
-    const validatePhoneNumber = () => {
-      removeInputNotice('phone-number');
-
-      const validationResult = isPhoneNumberValid(
-        document.getElementById('phone-number-input').value
-      );
-      validations.phoneNumber = validationResult.isValid;
-      if (validationResult.isValid === false) {
-        showInputWarning('phone-number', validationResult.message);
-      }
-    };
-
-    const isPhoneNumberValid = (phoneNumber) => {
-      const regex = new RegExp('^[0-9]+$');
-
-      if (phoneNumber.length == 0) {
-        return {
-          isValid: false,
-          message: '전화번호를 입력해 주세요.',
-        };
-      } else if (!regex.test(phoneNumber)) {
-        return {
-          isValid: false,
-          message: '하이픈(-)을 제외한 숫자만 입력해 주세요.',
-        };
-      } else if (phoneNumber.length < 10 || phoneNumber.length > 11) {
-        return {
-          isValid: false,
-          message: '전화번호는 10자리 혹은 11자리만 가능합니다.',
-        };
-      } else {
-        return {
-          isValid: true,
-        };
-      }
     };
 
     const validateForm = () => {
