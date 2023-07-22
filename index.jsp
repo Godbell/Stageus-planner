@@ -61,14 +61,14 @@
           <span>계정이 없으신가요?</span>
         </div>
         <div class="signin-data-find-row">
-          <a href="/stageus-planner/signup.html">회원가입</a>
+          <a href="/stageus-planner/pages/signup.jsp">회원가입</a>
         </div>
         <div class="signin-data-find-row">
           <span>로그인 정보가 기억나지 않나요?</span>
         </div>
         <div class="signin-data-find-row">
-          <a href="/stageus-planner/find-mail.html">메일 찾기</a>
-          <a href="/stageus-planner/find-password.html">비밀번호 초기화</a>
+          <a href="/stageus-planner/pages/find-mail.jsp">메일 찾기</a>
+          <a href="/stageus-planner/pages/find-password.jsp">비밀번호 초기화</a>
         </div>
       </div>
     </div>

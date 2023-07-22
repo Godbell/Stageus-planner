@@ -13,7 +13,9 @@
   </head>
   <body>
     <div class="logo-area">
-      <a><img src="/stageus-planner/imgs/Stageus Logo.png" /></a>
+      <a href="/stageus-planner">
+        <img src="/stageus-planner/imgs/Stageus Logo.png" />
+      </a>
     </div>
     <div class="form-area">
       <h1>회원가입</h1>
