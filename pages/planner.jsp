@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html" pageEncoding="utf-8" %>
+<%@ page language="java" contentType="text/html" pageEncoding="utf-8" buffer="1000kb"%>
 
 <html lang="ko">
   <head>
@@ -362,19 +362,19 @@
 
     // year filter modifier buttons
     const yearDecreaseButton = document.getElementById('year-decrease-button');
-    yearDecreaseButton.href = `/stageus-planner/planner.html?year=${
+    yearDecreaseButton.href = `/stageus-planner/planner.html?year=\${
       Number(filterYear) - 1
-    }&month=${filterMonth}`;
+    }&month=\${filterMonth}`;
     const yearIncreaseButton = document.getElementById('year-increase-button');
-    yearIncreaseButton.href = `/stageus-planner/planner.html?year=${
+    yearIncreaseButton.href = `/stageus-planner/planner.html?year=\${
       Number(filterYear) + 1
-    }&month=${filterMonth}`;
+    }&month=\${filterMonth}`;
 
     // year filter content
     let currentYearModalSelectBoxIndex = 0;
     let yearModalSeletBoxContents = {};
     const createYearModalSelectBoxContent = (yearStart, index) => {
-      const contentPosition = `${20 + 236 * index}px`;
+      const contentPosition = `\${20 + 236 * index}px`;
       const yearModalSelectBoxContent = document.createElement('div');
       yearModalSelectBoxContent.classList.add('year-modal-selectbox-content');
       yearModalSelectBoxContent.style.left = contentPosition;
@@ -382,11 +382,11 @@
         const yearButton = document.createElement('a');
         yearButton.classList.add('modal-selectbox-item');
         yearButton.innerHTML = String(year);
-        yearButton.href = `/stageus-planner/planner.html?year=${yearButton.innerText}&month=${filterMonth}`;
+        yearButton.href = `/stageus-planner/planner.html?year=\${yearButton.innerText}&month=\${filterMonth}`;
         if (year === Number(filterYear)) {
           yearButton.classList.add('modal-selectbox-item-selected');
         }
-        // yearButton.href = `/planner.jsp?year=${year}&month=${filterMonth}
+        // yearButton.href = `/planner.jsp?year=\${year}&month=\${filterMonth}
         yearModalSelectBoxContent.appendChild(yearButton);
       }
       yearModalSeletBoxContents[index] = yearModalSelectBoxContent;
@@ -411,7 +411,7 @@
       ) {
         currentYearModalSelectBoxIndex--;
         for (let index of Object.keys(yearModalSeletBoxContents)) {
-          yearModalSeletBoxContents[index].style.left = `${
+          yearModalSeletBoxContents[index].style.left = `\${
             20 + 236 * (index - currentYearModalSelectBoxIndex)
           }px`;
         }
@@ -427,7 +427,7 @@
       ) {
         currentYearModalSelectBoxIndex++;
         for (let index of Object.keys(yearModalSeletBoxContents)) {
-          yearModalSeletBoxContents[index].style.left = `${
+          yearModalSeletBoxContents[index].style.left = `\${
             20 + 236 * (index - currentYearModalSelectBoxIndex)
           }px`;
         }
@@ -460,7 +460,7 @@
       )
     );
     monthButtons.forEach((monthButton) => {
-      monthButton.href = `/stageus-planner/planner.html?year=${filterYear}&month=${monthButton.innerText}`;
+      monthButton.href = `/stageus-planner/planner.html?year=\${filterYear}&month=\${monthButton.innerText}`;
     });
 
     // nav
