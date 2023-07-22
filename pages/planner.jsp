@@ -304,11 +304,11 @@
 
     // year filter modifier buttons
     const yearDecreaseButton = document.getElementById('year-decrease-button');
-    yearDecreaseButton.href = `/stageus-planner/planner.html?year=\${
+    yearDecreaseButton.href = `/stageus-planner/pages/planner.jsp?year=\${
       Number(filterYear) - 1
     }&month=\${filterMonth}`;
     const yearIncreaseButton = document.getElementById('year-increase-button');
-    yearIncreaseButton.href = `/stageus-planner/planner.html?year=\${
+    yearIncreaseButton.href = `/stageus-planner/pages/planner.jsp?year=\${
       Number(filterYear) + 1
     }&month=\${filterMonth}`;
 
@@ -324,7 +324,7 @@
         const yearButton = document.createElement('a');
         yearButton.classList.add('modal-selectbox-item');
         yearButton.innerHTML = String(year);
-        yearButton.href = `/stageus-planner/planner.html?year=\${yearButton.innerText}&month=\${filterMonth}`;
+        yearButton.href = `/stageus-planner/pages/planner.jsp?year=\${yearButton.innerText}&month=\${filterMonth}`;
         if (year === Number(filterYear)) {
           yearButton.classList.add('modal-selectbox-item-selected');
         }
@@ -402,7 +402,7 @@
       )
     );
     monthButtons.forEach((monthButton) => {
-      monthButton.href = `/stageus-planner/planner.html?year=\${filterYear}&month=\${monthButton.innerText}`;
+      monthButton.href = `/stageus-planner/pages/planner.jsp?year=\${filterYear}&month=\${monthButton.innerText}`;
     });
 
     // nav
