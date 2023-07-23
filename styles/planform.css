@@ -1,0 +1,101 @@
+@font-face {
+  font-family: NanumGothic;
+  src: url(../fonts/NanumGothic-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: NanumGothicBold;
+  src: url(../fonts/NanumGothic-Bold.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: NanumGothicExtraBold;
+  src: url(../fonts/NanumGothic-ExtraBold.ttf) format('truetype');
+}
+
+:root {
+  --main-color: #1b74e4;
+  --textarea-color: #b5b5b5;
+  --main-color-focused: #214c83;
+  --signin-data-find: #949494;
+  --dup-check-button-color: #1a1d63;
+  --large-screen-background-color: #d9d9d9;
+  --day-label-color: #1357ad;
+  --past-plan-color: #898989;
+  --past-plan-text-color: #707070;
+  --signout-button-color: #ff5b5b;
+}
+
+html,
+body {
+  min-width: 390px;
+  min-height: 544px;
+}
+
+body {
+  background-color: var(--main-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  width: calc(100% - 48px);
+  height: calc(100% - 50px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.form-text {
+  color: white;
+  font-size: 20px;
+  font-family: NanumGothicExtraBold;
+}
+
+input[type='date'],
+input[type='time'] {
+  background-color: transparent;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator,
+input[type='time']::-webkit-calendar-picker-indicator {
+  filter: invert(100%);
+}
+
+.content-label {
+  align-self: flex-start;
+  margin-top: 49px;
+  margin-bottom: 13px;
+}
+
+.form-rect {
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 5px;
+  width: 100%;
+}
+
+textarea {
+  flex: 1;
+  margin-bottom: 11px;
+  padding: 6px;
+  font-family: NanumGothic;
+  font-size: 20px;
+  color: white;
+}
+
+textarea:focus {
+  outline: 0;
+}
+
+input[type='submit'] {
+  height: 58px;
+}
