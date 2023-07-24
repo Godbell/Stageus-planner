@@ -167,6 +167,15 @@ main::-webkit-scrollbar-thumb {
 
 section {
   width: calc(100% - 36px);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.label-area {
+  border-bottom: 1px solid var(--textarea-color);
+  padding: 5px;
+  margin-bottom: 4px;
 }
 
 .day-label {

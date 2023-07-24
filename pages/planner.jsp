@@ -91,71 +91,7 @@
         </div>
       </div>
     </div>
-    <main>
-      <section>
-        <span class="day-label">9일</span>
-        <span class="day-name-label">(화)</span>
-        <hr class="devider" />
-        <article class="past-plan">
-          <span class="plan-time">09:10</span>
-          <span class="plan-content">준비 시간</span>
-          <button class="plan-button">
-            <svg
-              width="25"
-              height="26"
-              viewBox="0 0 25 26"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M23.5 7L19 2L1 20V24.5H6L23.5 7Z" stroke-width="2" />
-            </svg>
-          </button>
-          <button class="plan-button">
-            <svg
-              width="26"
-              height="26"
-              viewBox="0 0 26 26"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M1 1L25 25M25 1L1 25" stroke-width="2" />
-            </svg>
-          </button>
-        </article>
-      </section>
-      <section>
-        <span class="day-label">10일</span>
-        <span class="day-name-label">(수)</span>
-        <hr class="devider" />
-        <article>
-          <span class="plan-time">09:10</span>
-          <span class="plan-content">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
-            sed hendrerit tortor. D
-          </span>
-          <button class="plan-button">
-            <svg
-              width="25"
-              height="26"
-              viewBox="0 0 25 26"
-              fill="none"
-            >
-              <path d="M23.5 7L19 2L1 20V24.5H6L23.5 7Z" stroke-width="2" />
-            </svg>
-          </button>
-          <button class="plan-button">
-            <svg
-              width="26"
-              height="26"
-              viewBox="0 0 26 26"
-              fill="none"
-            >
-              <path d="M1 1L25 25M25 1L1 25" stroke-width="2" />
-            </svg>
-          </button>
-        </article>
-      </section>
-    </main>
+    <main></main>
     <nav>
       <div class="nav-menu">
         <div class="nav-menu-profile">
@@ -240,6 +176,7 @@
       </div>
     </nav>
   </body>
+  <script src="/stageus-planner/scripts/plan.js"></script>
   <script>
     const getURLParam = (paramNameToFind) => {
       // ...://location/to/the/page ? paramNameToFind=value&other=value
@@ -421,5 +358,17 @@
       navButton.addEventListener('click', showNav);
     };
     navButton.addEventListener('click', showNav);
+  </script>
+  <script>
+    // dummy
+    const mainContent = document.getElementsByTagName('main')[0];
+    for (let i = 1; i <= 31; i++) {
+      const daySection = createDaySection(`2023-07-\${String(i).padStart(2, '0')}`)
+      for (let j = 0; j < 5 ; j++) {
+        const plan = createPlan('id', `2023-07-\${String(i).padStart(2, '0')} 23:\${String(j).padStart(2, '0')}`, 'content');
+        daySection.appendChild(plan);
+      }
+      mainContent.appendChild(daySection);
+    }
   </script>
 </html>
