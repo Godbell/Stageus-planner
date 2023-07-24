@@ -98,19 +98,19 @@
           <h1>내 정보</h1>
           <div class="nav-menu-profile-row">
             <span class="nav-menu-profile-row-label">메일</span>
-            <span class="nav-menu-profile-row-value">example@example.com</span>
+            <span id="profile-mail" class="nav-menu-profile-row-value"></span>
           </div>
           <div class="nav-menu-profile-row">
             <span class="nav-menu-profile-row-label">이름</span>
-            <span class="nav-menu-profile-row-value">스어스</span>
+            <span id="profile-name" class="nav-menu-profile-row-value"></span>
           </div>
           <div class="nav-menu-profile-row">
             <span class="nav-menu-profile-row-label">전화번호</span>
-            <span class="nav-menu-profile-row-value">01012341234</span>
+            <span id="profile-tel" class="nav-menu-profile-row-value"></span>
           </div>
           <div class="nav-menu-profile-row">
             <span class="nav-menu-profile-row-label">직급</span>
-            <span class="nav-menu-profile-row-value">팀장</span>
+            <span id="profile-position" class="nav-menu-profile-row-value"></span>
           </div>
         </div>
         <div class="nav-menu-member-list">
@@ -358,9 +358,18 @@
       navButton.addEventListener('click', showNav);
     };
     navButton.addEventListener('click', showNav);
+
+    const initProfile = (mail, name, tel, position) => {
+      document.getElementById('profile-mail').innerHTML = mail;
+      document.getElementById('profile-name').innerHTML = name;
+      document.getElementById('profile-tel').innerHTML = tel;
+      document.getElementById('profile-position').innerHTML = position;
+    }
   </script>
   <script>
     // dummy
+    initProfile('example@example.com', '스어스', '01012341234', '팀장');
+
     const mainContent = document.getElementsByTagName('main')[0];
     for (let i = 1; i <= 31; i++) {
       const daySection = createDaySection(`2023-07-\${String(i).padStart(2, '0')}`)
