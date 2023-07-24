@@ -113,65 +113,6 @@
             <span id="profile-position" class="nav-menu-profile-row-value"></span>
           </div>
         </div>
-        <div class="nav-menu-member-list">
-          <h1>직원 목록</h1>
-          <div class="nav-menu-member-list-content">
-            <a class="nav-menu-member-button" href="#">
-              직원1 (example@example.com)
-            </a>
-            <a class="nav-menu-member-button" href="#">
-              직원1 (example@example.com)
-            </a>
-            <a class="nav-menu-member-button" href="#">
-              직원1 (example@example.com)
-            </a>
-            <a class="nav-menu-member-button" href="#">
-              직원1 (example@example.com)
-            </a>
-            <a class="nav-menu-member-button" href="#">
-              직원1 (example@example.com)
-            </a>
-            <a class="nav-menu-member-button" href="#">
-              직원1 (example@example.com)
-            </a>
-            <a class="nav-menu-member-button" href="#">
-              직원1 (example@example.com)
-            </a>
-            <a class="nav-menu-member-button" href="#">
-              직원1 (example@example.com)
-            </a>
-            <a class="nav-menu-member-button" href="#">
-              직원1 (example@example.com)
-            </a>
-            <a class="nav-menu-member-button" href="#">
-              직원1 (example@example.com)
-            </a>
-            <a class="nav-menu-member-button" href="#">
-              직원1 (example@example.com)
-            </a>
-            <a class="nav-menu-member-button" href="#">
-              직원1 (example@example.com)
-            </a>
-            <a class="nav-menu-member-button" href="#">
-              직원1 (example@example.com)
-            </a>
-            <a class="nav-menu-member-button" href="#">
-              직원1 (example@example.com)
-            </a>
-            <a class="nav-menu-member-button" href="#">
-              직원1 (example@example.com)
-            </a>
-            <a class="nav-menu-member-button" href="#">
-              직원1 (example@example.com)
-            </a>
-            <a class="nav-menu-member-button" href="#">
-              직원1 (example@example.com)
-            </a>
-            <a class="nav-menu-member-button" href="#">
-              직원1 (example@example.com)
-            </a>
-          </div>
-        </div>
         <div class="nav-menu-signout-button">로그아웃</div>
       </div>
     </nav>
@@ -365,6 +306,31 @@
       document.getElementById('profile-tel').innerHTML = tel;
       document.getElementById('profile-position').innerHTML = position;
     }
+
+    const createMemberLink = (memberId, mail, name) => {
+      const memberLink = document.createElement('a');
+      memberLink.classList.add('nav-menu-member-button');
+      memberLink.href = `/stageus-planner/pages/planner.jsp?view-member=\${memberId}`;
+      memberLink.innerHTML = `\${name} (\${mail})`;
+
+      return memberLink;
+    }
+
+    const createMemberList = () => {
+      const memberList = document.createElement('div');
+      memberList.classList.add('nav-menu-member-list');
+
+      const title = document.createElement('h1');
+      title.innerHTML = '직원 목록';
+      memberList.appendChild(title);
+
+      const contentArea = document.createElement('div');
+      contentArea.id = 'nav-member-list-content';
+      contentArea.classList.add('nav-menu-member-list-content');
+      memberList.appendChild(contentArea);
+
+      return memberList;
+    }
   </script>
   <script>
     // dummy
@@ -379,5 +345,14 @@
       }
       mainContent.appendChild(daySection);
     }
+
+    const navMenu = document.querySelector('nav > div');
+    const navMemberList = createMemberList();
+    for (let i = 0; i < 10; i++) {
+      const memberLink = createMemberLink('1', '직원', 'mail@mail.com');
+      navMemberList.querySelector('#nav-member-list-content').appendChild(memberLink);
+    }
+    navMenu.insertBefore(navMemberList, navMenu.childNodes[navMenu.childNodes.length - 2]);
+
   </script>
 </html>
