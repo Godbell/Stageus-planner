@@ -1,6 +1,9 @@
 const validateMail = () => {
   removeInputNotice('mail');
-  validations.mailDupChecked = false;
+
+  if (validations.mailDupChecked !== undefined) {
+    validations.mailDupChecked = false;
+  }
 
   const validationResult = isMailValid(
     document.getElementById('mail-input').value
@@ -37,7 +40,10 @@ const validatePhoneNumber = () => {
 
 const validatePassword = () => {
   removeInputNotice('password');
-  validations.passwordConfirm = false;
+
+  if (validations.passwordConfirm !== undefined) {
+    validations.passwordConfirm = false;
+  }
 
   const validationResult = isPasswordValid(
     document.getElementById('password-input').value

@@ -19,7 +19,12 @@
     </div>
     <div class="form-area">
       <h1>로그인</h1>
-      <form class="login-form" onsubmit="return validateForm();">
+      <form 
+        class="login-form"
+        onsubmit="return validateForm();"
+        action="/stageus-planner/actions/signin.jsp"
+        method="post"
+      >
         <div>
           <div class="form-row">
             <div class="form-row-label-area">
@@ -81,7 +86,6 @@
     };
 
     const validateForm = () => {
-      event.preventDefault();
       let result = true;
 
       validateMail();
