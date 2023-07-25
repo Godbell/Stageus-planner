@@ -165,6 +165,34 @@
           }
         });
     };
+    
+    const checkPhoneNumberDuplication = () => {
+      validatePhoneNumber();
+      if (validations.phoneNumber === false) return;
+
+      const phoneNumber = document.getElementById('phone-number-input').value;
+      fetch(`/stageus-planner/actions/checkTelDuplication.jsp?tel=\${phoneNumber}`)
+        .then((res) => res.text())
+        .then((text) => text.trim())
+        .then((text) => {
+          switch (text) {
+            case 'TEL_VALID':
+              validations.mailDupChecked = true;
+              showInputAllowance('phone-number', '가입할 수 있는 전화번호입니다.');
+              break;
+            case 'TEL_DUPLICATE':
+              validations.mailDupChecked = false;
+              showInputWarning('phone-number', '이미 가입한 전화번호입니다.');
+              break;
+            case 'TEL_INVALID':
+              validations.mailDupChecked = false;
+              showInputWarning('phone-number', '유효하지 않은 전화번호입니다.');
+              break;
+            default:
+              alert('잘못된 요청입니다.');
+          }
+        });
+    };
 
     const validateForm = () => {
       let result = true;

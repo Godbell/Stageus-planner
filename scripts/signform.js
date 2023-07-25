@@ -173,16 +173,6 @@ const isPhoneNumberValid = (phoneNumber) => {
   }
 };
 
-const checkPhoneNumberDuplication = () => {
-  // check code here
-
-  validatePhoneNumber();
-  if (validations.phoneNumber == true) {
-    validations.phoneNumberDupChecked = true;
-    showInputAllowance('phone-number', '사용할 수 있는 전화번호입니다.');
-  }
-};
-
 const isPasswordValid = (password) => {
   const regex = new RegExp('^[ -~]+$');
 
