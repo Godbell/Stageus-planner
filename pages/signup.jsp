@@ -138,22 +138,50 @@
       passwordConfirm: false,
     };
 
+    const checkMailDuplication = () => {
+      validateMail();
+      if (validations.mail === false) return;
+
+      const mail = document.getElementById('mail-input').value;
+      fetch(`/stageus-planner/actions/checkMailDuplication.jsp?mail=\${mail}`)
+        .then((res) => res.text())
+        .then((text) => text.trim())
+        .then((text) => {
+          switch (text) {
+            case 'MAIL_VALID':
+              validations.mailDupChecked = true;
+              showInputAllowance('mail', '사용할 수 있는 메일 주소입니다.');
+              break;
+            case 'MAIL_DUPLICATE':
+              validations.mailDupChecked = false;
+              showInputWarning('mail', '이미 사용중인 메일 주소입니다.');
+              break;
+            case 'MAIL_INVALID':
+              validations.mailDupChecked = false;
+              showInputWarning('mail', '유효하지 않은 메일 주소입니다.');
+              break;
+            default:
+              alert('잘못된 요청입니다.');
+          }
+        });
+    };
+
     const validateForm = () => {
-      event.preventDefault();
       let result = true;
 
+      validateMail();
       if (validations.mailDupChecked === false) {
         showInputWarning('mail', '중복체크를 실행해 주세요.');
         result = false;
       }
+
+      validatePhoneNumber();
       if (validations.phoneNumberDupChecked === false) {
         showInputWarning('phone-number', '중복체크를 실행해 주세요.');
         result = false;
       }
 
-      validateMail();
       validateName();
-      validatePhoneNumber();
       validatePassword();
       validatePasswordConfirm();
 

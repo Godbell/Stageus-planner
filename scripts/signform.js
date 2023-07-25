@@ -123,16 +123,6 @@ const isMailValid = (mail) => {
   }
 };
 
-const checkMailDuplication = () => {
-  // check code here
-
-  validateMail();
-  if (validations.mail === true) {
-    validations.mailDupChecked = true;
-    showInputAllowance('mail', '사용할 수 있는 메일 주소입니다.');
-  }
-};
-
 const isNameValid = (name) => {
   const regex = new RegExp('^[a-zA-Z가-힣]+$');
 
