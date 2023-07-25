@@ -126,6 +126,29 @@
               />
             </div>
           </div>
+          <div class="form-row">
+            <div class="form-row-label-area">
+              <span class="form-row-label">직급</span>
+              <span
+                id="position-notice"
+                class="form-row-label-notice"
+              ></span>
+            </div>
+            <div class="form-row-input-area">
+              <input
+                type="radio"
+                name="position"
+                class="radio-input"
+                value="팀장"
+              /> 팀장
+              <input
+                type="radio"
+                name="position"
+                class="radio-input"
+                value="직원"
+              /> 직원
+            </div>
+          </div>
         </div>
         <input type="submit" value="가입하기" />
       </form>
@@ -141,6 +164,7 @@
       phoneNumberDupChecked: false,
       password: false,
       passwordConfirm: false,
+      position: false
     };
 
     const checkMailDuplication = () => {
@@ -217,6 +241,7 @@
       validateName();
       validatePassword();
       validatePasswordConfirm();
+      validatePosition();
 
       if (
         Object.values(validations).filter(

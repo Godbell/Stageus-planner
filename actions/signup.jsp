@@ -70,6 +70,16 @@
     else return true;
   }
 
+  public boolean isPositionValid(String position) {
+    if (position == null) {
+      return false;
+    }
+    else if (!position.equals("팀장") && !position.equals("직원")) {
+      return false;
+    }
+    else return true;
+  }
+
   interface UniqueCheck {
     boolean method(Connection connection, String checkedString) throws Exception;
   }
@@ -81,6 +91,7 @@
   String name = request.getParameter("name");
   String tel = request.getParameter("phone-number");
   String password = request.getParameter("password");
+  String position = request.getParameter("position");
 
   boolean isSignupSucceeded = false;
   String message = "\"no message specified\"";
@@ -158,17 +169,20 @@
     && isNameValid(name)
     && isTelValid(tel)
     && isPasswordValid(password)
+    && isPositionValid(position)
     && mailUniqueCheckResult == true
     && telUniqueCheckResult == true;
 
   if (isSignupInfoValid) {
     try {
-      String sql = "INSERT INTO user (mail, name, tel, password) VALUES (?, ?, ?, ?);";
+      String sql
+       = "INSERT INTO user (mail, name, tel, password, position) VALUES (?, ?, ?, ?, ?);";
       PreparedStatement query = connect.prepareStatement(sql); 
       query.setString(1, mail);
       query.setString(2, name);
       query.setString(3, tel);
       query.setString(4, password);
+      query.setString(5, position);
 
       query.executeUpdate();
       isSignupSucceeded = true;
@@ -192,7 +206,6 @@
     location.href = '/stageus-planner';
   }
   else {
-    alert(`가입에 실패했습니다.`);
-    history.back();
+    alert(`가입에 실패했습니다. message: <%=message %>`);
   }
 </script>

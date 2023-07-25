@@ -70,6 +70,19 @@ const validatePasswordConfirm = () => {
   }
 };
 
+const validatePosition = () => {
+  removeInputNotice('position');
+
+  const validationResult = isPositionValid(
+    document.getElementsByName('position')
+  );
+
+  validations.position = validationResult.isValid;
+  if (validationResult.isValid === false) {
+    showInputWarning('position', validationResult.message);
+  }
+};
+
 const showInputWarning = (inputSubject, message) => {
   const inputElement = document.getElementById(`${inputSubject}-input`);
   const noticeElement = document.getElementById(`${inputSubject}-notice`);
@@ -210,6 +223,22 @@ const isPasswordConfirmValid = (password, passwordConfirm) => {
   } else {
     return {
       isValid: true,
+    };
+  }
+};
+
+const isPositionValid = (positionElements) => {
+  if (
+    Array.from(positionElements).filter((element) => element.checked === true)
+      .length == 1
+  ) {
+    return {
+      isValid: true,
+    };
+  } else {
+    return {
+      isValid: false,
+      message: '직급을 선택해 주세요.',
     };
   }
 };
