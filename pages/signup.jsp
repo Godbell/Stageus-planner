@@ -19,7 +19,12 @@
     </div>
     <div class="form-area">
       <h1>회원가입</h1>
-      <form class="login-form" method="post" onsubmit="return validateForm();">
+      <form 
+        class="login-form"
+        method="post"
+        onsubmit="return validateForm();"
+        action="/stageus-planner/actions/signup.jsp"
+      >
         <div>
           <div class="form-row">
             <div class="form-row-label-area">
@@ -33,7 +38,7 @@
                 name="mail"
                 placeholder="example@example.com"
                 class="text-input"
-                onchange="validateMail()"
+                onchange="resetMailDuplicationCheck(); validateMail();"
               />
               <button
                 class="dup-check-button"
@@ -75,7 +80,7 @@
                 name="phone-number"
                 class="text-input"
                 placeholder="01012341234"
-                onchange="validatePhoneNumber()"
+                onchange="resetPhoneNumberDuplicationCheck(); validatePhoneNumber();"
               />
               <button
                 class="dup-check-button"
@@ -114,7 +119,7 @@
               <input
                 id="password-confirm-input"
                 type="password"
-                name="password"
+                name="password-confirm"
                 class="text-input"
                 placeholder="********"
                 onchange="validatePasswordConfirm()"
@@ -177,15 +182,15 @@
         .then((text) => {
           switch (text) {
             case 'TEL_VALID':
-              validations.mailDupChecked = true;
+              validations.phoneNumberDupChecked = true;
               showInputAllowance('phone-number', '가입할 수 있는 전화번호입니다.');
               break;
             case 'TEL_DUPLICATE':
-              validations.mailDupChecked = false;
+              validations.phoneNumberDupChecked = false;
               showInputWarning('phone-number', '이미 가입한 전화번호입니다.');
               break;
             case 'TEL_INVALID':
-              validations.mailDupChecked = false;
+              validations.phoneNumberDupChecked = false;
               showInputWarning('phone-number', '유효하지 않은 전화번호입니다.');
               break;
             default:

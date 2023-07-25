@@ -1,9 +1,13 @@
+const resetMailDuplicationCheck = () => {
+  validations.mailDupChecked = false;
+};
+
+const resetPhoneNumberDuplicationCheck = () => {
+  validations.phoneNumberDupChecked = false;
+};
+
 const validateMail = () => {
   removeInputNotice('mail');
-
-  if (validations.mailDupChecked !== undefined) {
-    validations.mailDupChecked = false;
-  }
 
   const validationResult = isMailValid(
     document.getElementById('mail-input').value
@@ -27,7 +31,6 @@ const validateName = () => {
 
 const validatePhoneNumber = () => {
   removeInputNotice('phone-number');
-  validations.phoneNumberDupChecked = false;
 
   const validationResult = isPhoneNumberValid(
     document.getElementById('phone-number-input').value
@@ -131,10 +134,10 @@ const isNameValid = (name) => {
       isValid: false,
       message: '이름을 입력해 주세요.',
     };
-  } else if (name.length > 20) {
+  } else if (name.length > 20 || name.length < 2) {
     return {
       isValid: false,
-      message: '이름은 최대 20자까지 입력 가능합니다.',
+      message: '이름은 2~20자까지 입력 가능합니다.',
     };
   } else if (!regex.test(name)) {
     return {
