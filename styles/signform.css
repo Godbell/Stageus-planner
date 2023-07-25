@@ -122,6 +122,7 @@ input[type='submit'] {
   font-size: 16px;
   color: white;
   font-family: NanumGothicBold;
+  cursor: pointer;
 }
 
 input[type='submit']:hover {
