@@ -19,7 +19,12 @@
     </div>
     <div class="form-area">
       <h1>메일 찾기</h1>
-      <form class="login-form" onsubmit="return validateForm();">
+      <form 
+        class="login-form"
+        onsubmit="return validateForm();"
+        action="/stageus-planner/actions/find-mail.jsp"
+        method="post"
+      >
         <div>
           <div class="form-row">
             <div class="form-row-label-area">
