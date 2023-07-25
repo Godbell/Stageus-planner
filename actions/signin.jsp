@@ -45,7 +45,6 @@
 %>
 
 <%
-  request.setCharacterEncoding("utf-8");
   String mail = request.getParameter("mail");
   String password = request.getParameter("password");
   boolean loginSucceeded = true;
@@ -74,7 +73,8 @@
 
       if (password.equals(userPassword)) {
         loginSucceeded = true;
-        //session.setAttribute("idx", userIdx);
+        session.setAttribute("idx", userIdx);
+        session.setMaxInactiveInterval(10);
       }
       else {
         loginSucceeded = false;

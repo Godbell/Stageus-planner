@@ -1,5 +1,13 @@
 <%@ page language="java" contentType="text/html" pageEncoding="utf-8" %>
 
+<%
+  request.setCharacterEncoding("utf-8");
+  if ((String)session.getAttribute("idx") != null) {
+    response.sendRedirect("/stageus-planner/pages/planner.jsp");
+    return;
+  }
+%>
+
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
