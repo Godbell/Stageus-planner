@@ -1,5 +1,169 @@
 <%@ page language="java" contentType="text/html" pageEncoding="utf-8" buffer="1000kb"%>
 
+<%@ page import="java.util.*" %>
+<%@ page import="java.time.*" %>
+
+<%@ page import="java.sql.DriverManager" %>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.PreparedStatement" %>
+<%@ page import="java.sql.ResultSet" %>
+
+<%@ page import="org.json.simple.JSONArray" %>
+<%@ page import="org.json.simple.JSONObject" %>
+
+<%!
+  public int getCurrentYear() {
+    return LocalDate.now().getYear();
+  }
+
+  public int getCurrentMonth() {
+    return LocalDate.now().getMonthValue();
+  }
+
+  public int getCurrentDay() {
+    return LocalDate.now().getDayOfMonth();
+  }
+%>
+
+<%
+  request.setCharacterEncoding("utf-8");
+  LocalDateTime dateNow = LocalDateTime.now();
+  boolean errorOccurred = false;
+  String errorMessage = "No message specified";
+
+  // session attribute and parameters
+  String signedUserIdx = (String)session.getAttribute("idx");
+  
+  String showingUserIdx = request.getParameter("show-idx");
+  if (showingUserIdx == null) showingUserIdx = signedUserIdx;
+
+  Integer filterYear = null;
+  Integer filterMonth = null;
+
+  // profile attributes
+  String profileMail = null;
+  String profileName = null;
+  String profileTel = null;
+  String profilePosition = null;
+
+  // members json data array
+  JSONObject membersJSON = new JSONObject();
+  String membersJSONString = null;
+
+  // plan json dataset
+  JSONObject planJSON = new JSONObject();
+  String planJSONString = null;
+
+  if (signedUserIdx == null) {
+    errorOccurred = true;
+    errorMessage = "로그인이 필요합니다.";
+  }
+  else {
+    // connet db
+    Class.forName("com.mysql.jdbc.Driver");
+    Connection connect = DriverManager.getConnection(
+      "jdbc:mysql://localhost/planner",
+      "stageus",
+      "stageus"
+    );
+
+    // load user data
+    String userSql = "SELECT mail, name, tel, position FROM user WHERE idx=?";
+    PreparedStatement userQuery = connect.prepareStatement(userSql);
+    userQuery.setString(1, signedUserIdx);
+    ResultSet userData = userQuery.executeQuery();
+
+    if (userData.next()) {
+      profileMail = userData.getString("mail");
+      profileName = userData.getString("name");
+      profileTel = userData.getString("tel");
+      profilePosition = userData.getString("position");
+    }
+    else {
+      profileMail = "Invalid User";
+      profileName = "Invalid User";
+      profileTel = "Invalid User";
+      profilePosition = "Invalid User";
+    }
+
+    // load members data
+    if (profilePosition.equals("팀장")) {
+      String membersSql = "SELECT idx, mail, name FROM user WHERE position='직원'";
+      PreparedStatement membersQuery = connect.prepareStatement(membersSql);
+      ResultSet membersData = membersQuery.executeQuery();
+
+      JSONArray membersArray = new JSONArray();
+      while (membersData.next()) {
+        JSONObject singleMemberObject = new JSONObject();
+        singleMemberObject.put("idx", membersData.getInt("idx"));
+        singleMemberObject.put("mail", membersData.getString("mail"));
+        singleMemberObject.put("name", membersData.getString("name"));
+        membersArray.add(singleMemberObject);
+      }
+      membersJSON.put("members", membersArray);
+      membersJSONString = membersJSON.toString();
+    }
+
+    // validate signed user's permission to show other's plan
+    boolean showingOthersPlan = !signedUserIdx.equals(showingUserIdx);
+
+    if (!profilePosition.equals("팀장") && showingOthersPlan) { 
+      errorOccurred = true;
+      errorMessage = "권한이 없습니다.";
+    }
+    else {
+      // setup year filter
+      try {
+        filterYear = Integer.parseInt(request.getParameter("year"));
+      }
+      catch (Exception e) {
+        filterYear = null;
+      }
+      finally {
+        if (filterYear == null) {
+          filterYear = getCurrentYear();
+        }
+      }
+
+      // setup month filter
+      try {
+        filterMonth = Integer.parseInt(request.getParameter("month"));
+      }
+      catch (Exception e) {
+        filterMonth = null;
+      }
+      finally {
+        if (filterMonth == null) {
+          filterMonth = getCurrentMonth();
+        }
+      }
+
+      // get plan data
+      String planSql
+       = "SELECT datetime, content FROM plan"
+        + " WHERE datetime BETWEEN ? AND ?"
+        + " AND user_idx=?"
+        + " ORDER BY datetime ASC;";
+      PreparedStatement planQuery = connect.prepareStatement(planSql);
+      planQuery.setString(1, filterYear + "-" + filterMonth + "-01");
+      planQuery.setString(2, filterYear + "-" + filterMonth + "-31");
+      planQuery.setString(3, showingUserIdx);
+      ResultSet planData = planQuery.executeQuery();
+      
+      JSONArray planArray = new JSONArray();
+      while (planData.next()) {
+        JSONObject singlePlanObject = new JSONObject();
+        singlePlanObject.put("datetime", planData.getString("datetime"));
+        singlePlanObject.put("content", planData.getString("content"));
+        singlePlanObject.put("idx", showingUserIdx);
+        planArray.add(singlePlanObject);
+      }
+      planJSON.put("plans", planArray);
+      planJSONString = planJSON.toString();
+    }
+  }
+%>
+
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -113,37 +277,29 @@
             <span id="profile-position" class="nav-menu-profile-row-value"></span>
           </div>
         </div>
-        <div class="nav-menu-signout-button">로그아웃</div>
+        <div id="signout-button" class="nav-menu-signout-button">
+          로그아웃
+        </div>
       </div>
     </nav>
   </body>
+  <script>
+    if (<%= errorOccurred %>) {
+      alert("<%=errorMessage %>");
+      location.href = "/stageus-planner";
+    }
+  </script>
   <script src="/stageus-planner/scripts/plan.js"></script>
   <script>
-    const getURLParam = (paramNameToFind) => {
-      // ...://location/to/the/page ? paramNameToFind=value&other=value
-      const queryString = window.location.href.split('?')[1];
-      if (queryString === undefined) return undefined;
-
-      // paramNameToFind=value & other=value
-      const params = queryString.split('&');
-
-      for (let param of params) {
-        // paramNameToFind = value
-        const paramName = param.split('=')[0];
-        const paramValue = param.split('=')[1];
-
-        if (paramName == paramNameToFind) return paramValue;
-      }
-
-      return undefined;
-    };
+    // signout button
+    const signoutButton = document.getElementById('signout-button');
+    signoutButton.addEventListener('click', () => {
+      location.href = "/stageus-planner/actions/signout.jsp";
+    })
 
     // date filter init
-    const dateNow = new Date(Date.now());
-    const filterYear = String(getURLParam('year') ?? dateNow.getFullYear());
-    const filterMonth =
-      getURLParam('month')?.padStart(2, '0') ??
-      String(dateNow.getMonth() + 1).padStart(2, '0');
+    const filterYear = '<%=filterYear %>';
+    const filterMonth = '<%=filterMonth %>'.padStart(2, '0');
 
     const yearText = document.getElementById('year-selector-text');
     yearText.innerHTML = filterYear;
@@ -184,11 +340,11 @@
     const yearDecreaseButton = document.getElementById('year-decrease-button');
     yearDecreaseButton.href = `/stageus-planner/pages/planner.jsp?year=\${
       Number(filterYear) - 1
-    }&month=\${filterMonth}`;
+    }&month=\${Number(filterMonth)}`;
     const yearIncreaseButton = document.getElementById('year-increase-button');
     yearIncreaseButton.href = `/stageus-planner/pages/planner.jsp?year=\${
       Number(filterYear) + 1
-    }&month=\${filterMonth}`;
+    }&month=\${Number(filterMonth)}`;
 
     // year filter content
     let currentYearModalSelectBoxIndex = 0;
@@ -202,7 +358,7 @@
         const yearButton = document.createElement('a');
         yearButton.classList.add('modal-selectbox-item');
         yearButton.innerHTML = String(year);
-        yearButton.href = `/stageus-planner/pages/planner.jsp?year=\${yearButton.innerText}&month=\${filterMonth}`;
+        yearButton.href = `/stageus-planner/pages/planner.jsp?year=\${yearButton.innerText}&month=\${Number(filterMonth)}`;
         if (year === Number(filterYear)) {
           yearButton.classList.add('modal-selectbox-item-selected');
         }
@@ -310,7 +466,7 @@
     const createMemberLink = (memberId, mail, name) => {
       const memberLink = document.createElement('a');
       memberLink.classList.add('nav-menu-member-button');
-      memberLink.href = `/stageus-planner/pages/planner.jsp?view-member=\${memberId}`;
+      memberLink.href = `/stageus-planner/pages/planner.jsp?show-idx=\${memberId}`;
       memberLink.innerHTML = `\${name} (\${mail})`;
 
       return memberLink;
@@ -333,26 +489,53 @@
     }
   </script>
   <script>
-    // dummy
-    initProfile('example@example.com', '스어스', '01012341234', '팀장');
+    initProfile(
+      '<%=profileMail %>', 
+      '<%=profileName %>', 
+      '<%=profileTel %>', 
+      '<%=profilePosition %>', 
+    );
 
+    const planData = JSON.parse(`<%=planJSONString %>`)['plans'];
     const mainContent = document.getElementsByTagName('main')[0];
-    for (let i = 1; i <= 31; i++) {
-      const daySection = createDaySection(`2023-07-\${String(i).padStart(2, '0')}`)
-      for (let j = 0; j < 5 ; j++) {
-        const plan = createPlan('id', `2023-07-\${String(i).padStart(2, '0')} 23:\${String(j).padStart(2, '0')}`, 'content');
-        daySection.appendChild(plan);
+    planData.forEach(plan => {
+      const planDate = new Date(plan['datetime']);
+      const daySection = document.querySelector(`section[data-day="\${planDate.getDate()}"]`);
+
+      if (daySection === undefined || daySection === null) {
+        const newDaySection = createDaySection(plan['datetime']);
+        const planElement = createPlan(plan['idx'], plan['datetime'], plan['content']);
+        newDaySection.appendChild(planElement);
+        mainContent.appendChild(newDaySection);
       }
-      mainContent.appendChild(daySection);
+      else {
+        const planElement = createPlan(plan['idx'], plan['datetime'], plan['content']);
+        daySection.appendChild(planElement);
+      }
+    });
+
+    if (filterYear === String(new Date(Date.now()).getDate())) {
+      document.querySelector(
+        `section[data-day="\${
+          new Date(Date.now()).getDate()
+        }"]`
+      ).scrollIntoView();
     }
 
+    const membersData = JSON.parse(`<%=membersJSONString %>`)['members'];
     const navMenu = document.querySelector('nav > div');
     const navMemberList = createMemberList();
-    for (let i = 0; i < 10; i++) {
-      const memberLink = createMemberLink('1', '직원', 'mail@mail.com');
-      navMemberList.querySelector('#nav-member-list-content').appendChild(memberLink);
-    }
-    navMenu.insertBefore(navMemberList, navMenu.childNodes[navMenu.childNodes.length - 2]);
+    const navMemberListContent = navMemberList.querySelector('#nav-member-list-content');
 
+    membersData.forEach(member => {
+      const memberLink = createMemberLink(
+        member['idx'], 
+        member['mail'], 
+        member['name'],
+      );
+      navMemberListContent.appendChild(memberLink);
+    });
+
+    navMenu.insertBefore(navMemberList, navMenu.childNodes[navMenu.childNodes.length - 2]);
   </script>
 </html>

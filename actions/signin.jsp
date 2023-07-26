@@ -74,7 +74,7 @@
       if (password.equals(userPassword)) {
         loginSucceeded = true;
         session.setAttribute("idx", userIdx);
-        session.setMaxInactiveInterval(10);
+        session.setMaxInactiveInterval(7200);
       }
       else {
         loginSucceeded = false;
