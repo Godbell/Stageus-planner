@@ -60,13 +60,15 @@ const createPlanDeleteButton = () => {
   return planEditButton;
 };
 
-const createPlan = (planId, datetime, content) => {
+const createPlan = (datetime, content, isMyPlan) => {
   const plan = document.createElement('article');
-  plan.dataset.planId = planId;
   plan.appendChild(createPlanTime(datetime));
   plan.appendChild(createPlanContent(content));
-  plan.appendChild(createPlanEditButton());
-  plan.appendChild(createPlanDeleteButton());
+
+  if (isMyPlan) {
+    plan.appendChild(createPlanEditButton());
+    plan.appendChild(createPlanDeleteButton());
+  }
 
   const planDate = new Date(datetime);
   if (new Date(Date.now()) > planDate) {

@@ -52,6 +52,7 @@
 
   // showing user attribute
   String showingUserName = null;
+  boolean showingOthersPlan = false;
 
   // plan json dataset
   JSONObject planJSON = new JSONObject();
@@ -118,7 +119,7 @@
     }
 
     // validate signed user's permission to show other's plan
-    boolean showingOthersPlan = !signedUserIdx.equals(showingUserIdx);
+    showingOthersPlan = !signedUserIdx.equals(showingUserIdx);
 
     if (!profilePosition.equals("팀장") && showingOthersPlan) { 
       errorOccurred = true;
@@ -516,15 +517,18 @@
     planData.forEach(plan => {
       const planDate = new Date(plan['datetime']);
       const daySection = document.querySelector(`section[data-day="\${planDate.getDate()}"]`);
+      const planElement = createPlan(
+        plan['datetime'], 
+        plan['content'],
+        <%=!showingOthersPlan %>
+      );
 
       if (daySection === undefined || daySection === null) {
         const newDaySection = createDaySection(plan['datetime']);
-        const planElement = createPlan(plan['idx'], plan['datetime'], plan['content']);
         newDaySection.appendChild(planElement);
         mainContent.appendChild(newDaySection);
       }
       else {
-        const planElement = createPlan(plan['idx'], plan['datetime'], plan['content']);
         daySection.appendChild(planElement);
       }
     });
@@ -544,9 +548,9 @@
 
     membersData.forEach(member => {
       const memberLink = createMemberLink(
-        member['idx'], 
-        member['mail'], 
-        member['name'],
+        member['idx'],
+        member['name'], 
+        member['mail']
       );
       navMemberListContent.appendChild(memberLink);
     });
