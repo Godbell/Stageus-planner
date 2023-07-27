@@ -22,15 +22,21 @@ const createPlanContent = (content) => {
 };
 
 const createPlanButtonImage = (width, height, pathD) => {
-  const planEditButtonImage = document.createElement('svg');
-  planEditButtonImage.width = width;
-  planEditButtonImage.height = height;
-  planEditButtonImage.viewBox = `0 0 ${width} ${height}`;
-  planEditButtonImage.fill = 'none';
+  const planEditButtonImage = document.createElementNS(
+    'http://www.w3.org/2000/svg',
+    'svg'
+  );
+  planEditButtonImage.setAttribute('width', width);
+  planEditButtonImage.setAttribute('height', height);
+  planEditButtonImage.setAttribute('viewBox', `0 0 ${width} ${height}`);
+  planEditButtonImage.setAttribute('fill', 'none');
 
-  const planEditButtonImagePath = document.createElement('path');
-  planEditButtonImagePath.d = pathD;
-  planEditButtonImagePath.strokeWidth = '2';
+  const planEditButtonImagePath = document.createElementNS(
+    'http://www.w3.org/2000/svg',
+    'path'
+  );
+  planEditButtonImagePath.setAttribute('d', pathD);
+  planEditButtonImagePath.setAttribute('stroke-width', '2');
 
   planEditButtonImage.appendChild(planEditButtonImagePath);
   return planEditButtonImage;
