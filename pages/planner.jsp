@@ -50,6 +50,9 @@
   JSONObject membersJSON = new JSONObject();
   String membersJSONString = null;
 
+  // showing user attribute
+  String showingUserName = null;
+
   // plan json dataset
   JSONObject planJSON = new JSONObject();
   String planJSONString = null;
@@ -102,6 +105,16 @@
       }
       membersJSON.put("members", membersArray);
       membersJSONString = membersJSON.toString();
+    }
+
+    // load showing user data
+    String showingUserSql = "SELECT name FROM user WHERE idx=?;";
+    PreparedStatement showingUserQuery = connect.prepareStatement(showingUserSql);
+    showingUserQuery.setString(1, showingUserIdx);
+
+    ResultSet showingUserData = showingUserQuery.executeQuery();
+    if (showingUserData.next()) {
+      showingUserName = showingUserData.getString("name");
     }
 
     // validate signed user's permission to show other's plan
@@ -489,6 +502,8 @@
     }
   </script>
   <script>
+    document.title = '<%=showingUserName %>님의 일정';
+
     initProfile(
       '<%=profileMail %>', 
       '<%=profileName %>', 
