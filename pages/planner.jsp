@@ -154,7 +154,7 @@
 
       // get plan data
       String planSql
-       = "SELECT datetime, content FROM plan"
+        = "SELECT idx, datetime, content FROM plan"
         + " WHERE datetime BETWEEN ? AND ?"
         + " AND user_idx=?"
         + " ORDER BY datetime ASC;";
@@ -167,9 +167,9 @@
       JSONArray planArray = new JSONArray();
       while (planData.next()) {
         JSONObject singlePlanObject = new JSONObject();
+        singlePlanObject.put("idx", planData.getString("idx"));
         singlePlanObject.put("datetime", planData.getString("datetime"));
         singlePlanObject.put("content", planData.getString("content"));
-        singlePlanObject.put("idx", showingUserIdx);
         planArray.add(singlePlanObject);
       }
       planJSON.put("plans", planArray);
@@ -305,6 +305,31 @@
   </script>
   <script src="/stageus-planner/scripts/plan.js"></script>
   <script>
+    // new plan button
+    const newPlanButton = document.querySelector('.new-plan-button');
+    let planSubmitted = false;
+    newPlanButton.addEventListener('click', () => {
+      const newPlanPopup = window.open(
+        '/stageus-planner/pages/new-plan.jsp',
+        "",
+        "width=450, height=600"
+      );
+
+      newPlanPopup.addEventListener('load', () => {
+        const newPlanSubmitButton =
+        newPlanPopup.document.querySelector('input[type="submit"]');
+        newPlanSubmitButton.addEventListener('click', () => {
+          planSubmitted = true;
+        });
+
+        newPlanPopup.addEventListener('unload', () => {
+          if (planSubmitted) {
+            location.reload();
+          }
+        });
+      })
+    });
+
     // signout button
     const signoutButton = document.getElementById('signout-button');
     signoutButton.addEventListener('click', () => {
@@ -518,6 +543,7 @@
       const planDate = new Date(plan['datetime']);
       const daySection = document.querySelector(`section[data-day="\${planDate.getDate()}"]`);
       const planElement = createPlan(
+        plan['idx'],
         plan['datetime'], 
         plan['content'],
         <%=!showingOthersPlan %>

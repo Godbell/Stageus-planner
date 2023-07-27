@@ -42,32 +42,58 @@ const createPlanButtonImage = (width, height, pathD) => {
   return planEditButtonImage;
 };
 
-const createPlanEditButton = () => {
+const createPlanEditButton = (planIdx) => {
   const planEditButton = document.createElement('button');
   planEditButton.classList.add('plan-button');
   planEditButton.appendChild(
     createPlanButtonImage('25', '26', 'M23.5 7L19 2L1 20V24.5H6L23.5 7Z')
   );
+
+  planEditButton.addEventListener('click', () => {
+    const newPlanPopup = window.open(
+      `/stageus-planner/pages/edit-plan.jsp?plan-idx=${planIdx}`,
+      '',
+      'width=450, height=600'
+    );
+
+    newPlanPopup.addEventListener('load', () => {
+      const newPlanSubmitButton = newPlanPopup.document.querySelector(
+        'input[type="submit"]'
+      );
+      newPlanSubmitButton.addEventListener('click', () => {
+        planSubmitted = true;
+      });
+
+      newPlanPopup.addEventListener('unload', () => {
+        if (planSubmitted) {
+          location.reload();
+        }
+      });
+    });
+  });
+
   return planEditButton;
 };
 
-const createPlanDeleteButton = () => {
-  const planEditButton = document.createElement('button');
+const createPlanDeleteButton = (planIdx) => {
+  const planEditButton = document.createElement('a');
   planEditButton.classList.add('plan-button');
   planEditButton.appendChild(
     createPlanButtonImage('25', '26', 'M1 1L25 25M25 1L1 25')
   );
+  planEditButton.href = `/stageus-planner/actions/delete-plan.jsp?idx=${planIdx}`;
+
   return planEditButton;
 };
 
-const createPlan = (datetime, content, isMyPlan) => {
+const createPlan = (planIdx, datetime, content, isMyPlan) => {
   const plan = document.createElement('article');
   plan.appendChild(createPlanTime(datetime));
   plan.appendChild(createPlanContent(content));
 
   if (isMyPlan) {
-    plan.appendChild(createPlanEditButton());
-    plan.appendChild(createPlanDeleteButton());
+    plan.appendChild(createPlanEditButton(planIdx));
+    plan.appendChild(createPlanDeleteButton(planIdx));
   }
 
   const planDate = new Date(datetime);
