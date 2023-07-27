@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/stageus-planner/styles/general.css">
     <link rel="stylesheet" href="/stageus-planner/styles/planform.css">
   </head>
-  <body>o
+  <body>
     <form
       onsubmit="return validateForm();"
       action="/stageus-planner/actions/new-plan.jsp"
