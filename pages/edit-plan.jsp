@@ -12,7 +12,12 @@
     <link rel="stylesheet" href="/stageus-planner/styles/planform.css">
   </head>
   <body>
-    <form>
+    <form
+      onsubmit="return validateForm();"
+      action="/stageus-planner/actions/edit-plan.jsp"
+      method="post"
+    >
+      <input type="hidden" name="idx">
       <div class="form-row">
         <input type="date" name="date" class="form-text">
         <input type="time" name="time" class="form-text">

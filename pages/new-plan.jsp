@@ -11,15 +11,21 @@
     <link rel="stylesheet" href="/stageus-planner/styles/general.css">
     <link rel="stylesheet" href="/stageus-planner/styles/planform.css">
   </head>
-  <body>
-    <form>
+  <body>o
+    <form
+      onsubmit="return validateForm();"
+      action="/stageus-planner/actions/new-plan.jsp"
+      method="post"
+    >
       <div class="form-row">
-        <input type="date" name="date" class="form-text">
-        <input type="time" name="time" class="form-text">
+        <input type="date" name="date" class="form-text" onchange="validateDate()">
+        <input type="time" name="time" class="form-text" onchange="validateTime()">
       </div>
       <span class="content-label form-text">내용</span>
-      <textarea name="content" class="form-rect"></textarea>
+      <textarea name="content" class="form-rect" oninput="validateContent()"></textarea>
       <input type="submit" value="등록" class="form-rect form-text">
     </form>
+
+    <script src="/stageus-planner/scripts/planform.js"></script>
   </body>
 </html>
